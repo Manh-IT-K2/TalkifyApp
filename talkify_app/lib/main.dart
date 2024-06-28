@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:talkify_app/view/home_view.dart';
 import 'package:talkify_app/view/login_view.dart';
 
 void main() {
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routes: {
-        "/": (context) => const LoginView()
+        //"/": (context) => const LoginView(),
+        "/": (context) => const HomeView()
       },
     );
   }
