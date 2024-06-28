@@ -34,7 +34,9 @@ class _HomeViewState extends State<HomeView> {
       body: ListView.builder(
         itemCount: 10,
         itemBuilder: (context, index) => ListTile(
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, "/chat");
+          },
           leading: Stack(
             children: [
               CircleAvatar(
