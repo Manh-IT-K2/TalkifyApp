@@ -80,7 +80,9 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, "/search");
+        },
         child: const Icon(Icons.add),
       ),
     );

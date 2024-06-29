@@ -3,6 +3,7 @@ import 'package:talkify_app/view/chat_view.dart';
 import 'package:talkify_app/view/home_view.dart';
 import 'package:talkify_app/view/login_view.dart';
 import 'package:talkify_app/view/profile_view.dart';
+import 'package:talkify_app/view/search_view.dart';
 import 'package:talkify_app/view/update_profile_view.dart';
 
 void main() {
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         "/chat": (context) => const ChatView(),
         "/profile":(context) => const ProfileView(),
         "/updateProfile": (context) => const UpdateProfileView(),
+        "/search": (context) => const SearchView()
       },
     );
   }
