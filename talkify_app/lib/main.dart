@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:talkify_app/view/chat_view.dart';
 import 'package:talkify_app/view/home_view.dart';
 import 'package:talkify_app/view/login_view.dart';
+import 'package:talkify_app/view/profile_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,7 +38,8 @@ class MyApp extends StatelessWidget {
       routes: {
         //"/": (context) => const LoginView(),
         "/": (context) => const HomeView(),
-        "/chat": (context) => const ChatView()
+        "/chat": (context) => const ChatView(),
+        "/profile":(context) => const ProfileView()
       },
     );
   }

@@ -24,10 +24,13 @@ class _HomeViewState extends State<HomeView> {
           ),
         ),
         actions: [
-          CircleAvatar(
-            backgroundImage: const Image(
-              image: AssetImage("assets/image/user.png"),
-            ).image,
+          GestureDetector(
+            onTap: () => Navigator.pushNamed(context, "/profile"),
+            child: CircleAvatar(
+              backgroundImage: const Image(
+                image: AssetImage("assets/image/user.png"),
+              ).image,
+            ),
           ),
         ],
       ),
