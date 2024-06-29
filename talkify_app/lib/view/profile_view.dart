@@ -14,23 +14,24 @@ class _ProfileViewState extends State<ProfileView> {
       appBar: AppBar(
         title: const Text("Profile"),
       ),
-      body: const Column(
+      body: Column(
         children: [
           ListTile(
-            leading: CircleAvatar(
+            onTap: () => Navigator.pushNamed(context, "/updateProfile"),
+            leading: const CircleAvatar(
               backgroundImage: AssetImage("assets/image/user.png"),
             ),
-            title: Text("Current User"),
-            subtitle: Text("+84899391826"),
-            trailing: Icon(Icons.edit_outlined),
+            title: const Text("Current User"),
+            subtitle: const Text("+84899391826"),
+            trailing: const Icon(Icons.edit_outlined),
           ),
-          Divider(),
-          ListTile(
+          const Divider(),
+          const ListTile(
             leading: Icon(Icons.logout_outlined),
             title: Text("Logout"),
           ),
-          Divider(),
-          ListTile(
+          const Divider(),
+          const ListTile(
             leading: Icon(Icons.info_outline),
             title: Text("About"),
           ),
