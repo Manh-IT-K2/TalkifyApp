@@ -11,6 +11,8 @@ class ChatView extends StatefulWidget {
 }
 
 class _ChatViewState extends State<ChatView> {
+  TextEditingController messageController = TextEditingController();
+
   List messages = [
     MessageModel(
         message: "Hello!",
@@ -30,6 +32,13 @@ class _ChatViewState extends State<ChatView> {
         receiver: "202",
         timestamp: DateTime(2024, 1, 1),
         isSeenByRecevier: false),
+    MessageModel(
+        message: "How Are You?",
+        sender: "101",
+        receiver: "202",
+        timestamp: DateTime(2024, 1, 1),
+        isSeenByRecevier: false,
+        isImage: true),
   ];
   @override
   Widget build(BuildContext context) {
@@ -67,10 +76,41 @@ class _ChatViewState extends State<ChatView> {
           ],
         ),
       ),
-      body: ListView.builder(
-        itemCount: messages.length,
-        itemBuilder: (context, index) => ChatMessage(
-            msg: messages[index], currentUser: "101", isImage: false),
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              child: ListView.builder(
+                itemCount: messages.length,
+                itemBuilder: (context, index) => ChatMessage(
+                    msg: messages[index], currentUser: "101", isImage: true),
+              ),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.all(6),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: kSecondaryColor,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: messageController,
+                    decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Type a message ..."),
+                  ),
+                ),
+                IconButton(onPressed: (){}, icon: const Icon(Icons.image)),
+                IconButton(onPressed: (){}, icon: const Icon(Icons.send))
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:talkify_app/constant/color.dart';
 
@@ -65,7 +66,9 @@ class _LoginViewState extends State<LoginView> {
                         decoration: InputDecoration(
                           prefixIcon: CountryCodePicker(
                             onChanged: (value) {
-                              print(value.dialCode);
+                              if (kDebugMode) {
+                                print(value.dialCode);
+                              }
                               countryCode = value.dialCode!;
                             },
                             initialSelection: "VN",

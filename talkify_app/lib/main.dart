@@ -35,8 +35,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routes: {
-        "/": (context) => const LoginView(),
-        "/home": (context) => const HomeView(),
+        //"/": (context) => const LoginView(),
+        "/": (context) => const HomeView(),
         "/chat": (context) => const ChatView()
       },
     );
