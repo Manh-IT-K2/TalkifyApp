@@ -28,8 +28,11 @@ class _LoginViewState extends State<LoginView> {
         if (value) {
           Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
         } else {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text("Login failed!")));
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Login failed!"),
+            ),
+          );
         }
       });
     }
@@ -72,7 +75,7 @@ class _LoginViewState extends State<LoginView> {
                         controller: phoneNumberController,
                         keyboardType: TextInputType.phone,
                         validator: (value) {
-                          if (value!.length != 10) {
+                          if (value!.length != 9) {
                             return "Invalid phone number";
                           }
                           return null;
@@ -104,10 +107,9 @@ class _LoginViewState extends State<LoginView> {
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
                             createPhoneSecction(
-                                    phone: 
-                                    phoneNumberController.text)
+                                    phone: countryCode + phoneNumberController.text)
                                 .then((value) {
-                              if (value != "Login error") {
+                              if (value != "login_error") {
                                 showDialog(
                                   context: context,
                                   builder: (context) => AlertDialog(
@@ -156,8 +158,10 @@ class _LoginViewState extends State<LoginView> {
                                 );
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text("Failed to send otp!")));
+                                  const SnackBar(
+                                    content: Text("Failed to send otp!"),
+                                  ),
+                                );
                               }
                             });
                           }

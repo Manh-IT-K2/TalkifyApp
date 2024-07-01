@@ -50,19 +50,19 @@ Future<String> checkPhoneNumber({required String phoneNo}) async {
         if (kDebugMode) {
           print("No user exist on DB");
         }
-        return "User not exist";
+        return "user_not_exist";
       }
     } else {
       if (kDebugMode) {
         print("No user exist on DB");
       }
-      return "User not exist";
+      return "user_not_exist";
     }
   } on AppwriteException catch (e) {
     if (kDebugMode) {
       print("Error on reading database: $e");
     }
-    return "User not exist";
+    return "user_not_exist";
   }
 }
 
@@ -70,10 +70,10 @@ Future<String> checkPhoneNumber({required String phoneNo}) async {
 Future<String> createPhoneSecction({required String phone}) async {
   try {
     final userId = await checkPhoneNumber(phoneNo: phone);
-    if (userId == "User not exist") {
+    if (userId == "user_not_exist") {
       //creating a new account
       final Token data =
-          await account.createPhoneToken(userId: userId, phone: phone);
+          await account.createPhoneToken(userId: ID.unique(), phone: phone);
 
       // save the new user to user collection
       savePhoneToDB(phoneNo: phone, userId: data.userId);
@@ -90,7 +90,7 @@ Future<String> createPhoneSecction({required String phone}) async {
     if (kDebugMode) {
       print("Error on cretae phone session: $e");
     }
-    return "Login error";
+    return "login_error";
   }
 }
 
@@ -116,7 +116,7 @@ Future<bool> checkSessions() async {
   try {
     final Session session = await account.getSession(sessionId: "current");
     if (kDebugMode) {
-      print("Seesion exits ${session.$id}");
+      print("Session exits ${session.$id}");
     }
     return true;
   } catch (e) {
