@@ -2,6 +2,7 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:talkify_app/constant/color.dart';
+import 'package:talkify_app/controller/appwrite_controller.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -21,6 +22,19 @@ class _LoginViewState extends State<LoginView> {
 
   //
   String countryCode = "+84";
+  void handleOtpSubmit(String userId, BuildContext context) {
+    if (formKey1.currentState!.validate()) {
+      loginWithOtp(otp: otpController.text, userId: userId).then((value) {
+        if (value) {
+          Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
+        } else {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(content: Text("Login failed!")));
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,8 +67,8 @@ class _LoginViewState extends State<LoginView> {
                       height: 20,
                     ),
                     Form(
+                      key: formKey,
                       child: TextFormField(
-                        key: formKey,
                         controller: phoneNumberController,
                         keyboardType: TextInputType.phone,
                         validator: (value) {
@@ -89,48 +103,63 @@ class _LoginViewState extends State<LoginView> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text("OTP Verification"),
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text("Enter 6 digit OTP"),
-                                    const SizedBox(
-                                      height: 12,
-                                    ),
-                                    Form(
-                                      key: formKey1,
-                                      child: TextFormField(
-                                        keyboardType: TextInputType.number,
-                                        controller: otpController,
-                                        validator: (value) {
-                                          if (value!.length != 6) {
-                                            return "Invalid OTP";
-                                          }
-                                          return null;
-                                        },
-                                        decoration: InputDecoration(
-                                          labelText: "Enter the otp received",
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(12)
+                            createPhoneSecction(
+                                    phone: 
+                                    phoneNumberController.text)
+                                .then((value) {
+                              if (value != "Login error") {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text("OTP Verification"),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text("Enter 6 digit OTP"),
+                                        const SizedBox(
+                                          height: 12,
+                                        ),
+                                        Form(
+                                          key: formKey1,
+                                          child: TextFormField(
+                                            keyboardType: TextInputType.number,
+                                            controller: otpController,
+                                            validator: (value) {
+                                              if (value!.length != 6) {
+                                                return "Invalid OTP";
+                                              }
+                                              return null;
+                                            },
+                                            decoration: InputDecoration(
+                                              labelText:
+                                                  "Enter the otp received",
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                                actions: [
-                                  TextButton(onPressed: (){
-                                    if (formKey1.currentState!.validate()) {
-                                      
-                                    }
-                                  }, child: const Text("Submit"))
-                                ],
-                              ),
-                            );
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          handleOtpSubmit(value, context);
+                                        },
+                                        child: const Text("Submit"),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text("Failed to send otp!")));
+                              }
+                            });
                           }
                         },
                         child: Text("Send OTP"),

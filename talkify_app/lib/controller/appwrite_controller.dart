@@ -66,23 +66,24 @@ Future<String> checkPhoneNumber({required String phoneNo}) async {
   }
 }
 
-
 // create  a phone secction, send otp to the phone number
 Future<String> createPhoneSecction({required String phone}) async {
   try {
     final userId = await checkPhoneNumber(phoneNo: phone);
     if (userId == "User not exist") {
       //creating a new account
-      final Token data = await account.createPhoneToken(userId: userId, phone: phone);  
+      final Token data =
+          await account.createPhoneToken(userId: userId, phone: phone);
 
       // save the new user to user collection
       savePhoneToDB(phoneNo: phone, userId: data.userId);
       return data.userId;
     }
     // if user is an existing user
-    else{
+    else {
       // create phone token for existing user
-      final Token data = await account.createPhoneToken(userId: userId, phone: phone);
+      final Token data =
+          await account.createPhoneToken(userId: userId, phone: phone);
       return data.userId;
     }
   } catch (e) {
@@ -90,5 +91,38 @@ Future<String> createPhoneSecction({required String phone}) async {
       print("Error on cretae phone session: $e");
     }
     return "Login error";
+  }
+}
+
+// login with otp
+Future<bool> loginWithOtp({required String otp, required String userId}) async {
+  try {
+    final Session session =
+        await account.updatePhoneSession(userId: userId, secret: otp);
+    if (kDebugMode) {
+      print(session.userId);
+    }
+    return true;
+  } catch (e) {
+    if (kDebugMode) {
+      print("Err on login with otp: $e");
+    }
+    return false;
+  }
+}
+
+// to check whether the session exits or not
+Future<bool> checkSessions() async {
+  try {
+    final Session session = await account.getSession(sessionId: "current");
+    if (kDebugMode) {
+      print("Seesion exits ${session.$id}");
+    }
+    return true;
+  } catch (e) {
+    if (kDebugMode) {
+      print("Session does not exits please login");
+    }
+    return false;
   }
 }
