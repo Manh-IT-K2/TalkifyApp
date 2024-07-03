@@ -77,6 +77,7 @@ Future<String> createPhoneSecction({required String phone}) async {
 
       // save the new user to user collection
       savePhoneToDB(phoneNo: phone, userId: data.userId);
+      print("phone: ${data.secret}");
       return data.userId;
     }
     // if user is an existing user
@@ -84,6 +85,7 @@ Future<String> createPhoneSecction({required String phone}) async {
       // create phone token for existing user
       final Token data =
           await account.createPhoneToken(userId: userId, phone: phone);
+           print("phone2: ${data.secret}");
       return data.userId;
     }
   } catch (e) {
@@ -125,4 +127,9 @@ Future<bool> checkSessions() async {
     }
     return false;
   }
+}
+
+// to logout the user and delete session
+Future logoutUser() async {
+    await account.deleteSession(sessionId: "current");
 }
