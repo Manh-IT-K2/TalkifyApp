@@ -13,44 +13,44 @@ class LocalSavedData {
   static Future<void> saveUserId(String id) async {
     await preferences!.setString("userId", id);
   }
-  
+
   // read the userId
-  static String getUserId(){
-    return preferences!.getString("userId") ??  "";
+  static String getUserId() {
+    return preferences!.getString("userId") ?? "";
   }
 
-   // save the userName
+  // save the userName
   static Future<void> saveUserName(String userName) async {
     await preferences!.setString("userName", userName);
   }
-  
+
   // read the userName
-  static String getUserName(){
-    return preferences!.getString("userName") ??  "";
+  static String getUserName() {
+    return preferences!.getString("userName") ?? "";
   }
 
-   // save the user phone
+  // save the user phone
   static Future<void> saveUserPhone(String phone) async {
     await preferences!.setString("phone", phone);
   }
-  
+
   // read the user phone
-  static String getUserPhone(){
-    return preferences!.getString("phone") ??  "";
+  static String getUserPhone() {
+    return preferences!.getString("phone") ?? "";
   }
 
-   // save the user profile picture
+  // save the user profile picture
   static Future<void> saveUserProfile(String profile) async {
     await preferences!.setString("profile", profile);
   }
-  
+
   // read the user profile picture
-  static String getUserProfile(){
-    return preferences!.getString("profile") ??  "";
+  static String getUserProfile() {
+    return preferences!.getString("profile") ?? "";
   }
 
   // clear all the saved data
-  static clearAllData(){
+  static clearAllData() {
     preferences!.clear();
     if (kDebugMode) {
       print("Cleared all data from local!");

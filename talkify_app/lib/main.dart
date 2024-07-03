@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:talkify_app/controller/appwrite_controller.dart';
+import 'package:talkify_app/controller/local_saved_data.dart';
 import 'package:talkify_app/view/chat_view.dart';
 import 'package:talkify_app/view/home_view.dart';
 import 'package:talkify_app/view/login_view.dart';
@@ -7,7 +8,10 @@ import 'package:talkify_app/view/profile_view.dart';
 import 'package:talkify_app/view/search_view.dart';
 import 'package:talkify_app/view/update_profile_view.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  await LocalSavedData.init();
   runApp(const MyApp());
 }
 
