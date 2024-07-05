@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="talkify_app"
+        android:label="T-Talkify"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
