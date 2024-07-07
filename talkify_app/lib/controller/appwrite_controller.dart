@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:flutter/foundation.dart';
+import 'package:talkify_app/model/user_data_model.dart';
 
 Client client = Client()
     .setEndpoint('https://cloud.appwrite.io/v1')
@@ -132,4 +133,23 @@ Future<bool> checkSessions() async {
 // to logout the user and delete session
 Future logoutUser() async {
     await account.deleteSession(sessionId: "current");
+}
+
+// load user data
+Future<UserDataModel?> getUserDetail({required String userId}) async {
+try {
+  final response = await databases.getDocument(databaseId: db, collectionId: userCollection, documentId: userId);
+  if (kDebugMode) {
+    print("Getting user data");
+  }
+  if (kDebugMode) {
+    print(response.data);
+  }
+  return UserDataModel.toMap(response.data);
+} catch (e) {
+  if (kDebugMode) {
+    print("Error in getting user data: $e");
+  }
+  return null;
+}
 }

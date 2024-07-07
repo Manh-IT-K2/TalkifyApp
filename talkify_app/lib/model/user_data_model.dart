@@ -13,4 +13,16 @@ class UserDataModel {
       this.profilePic,
       this.deviceToken,
       this.isOnline});
+
+  // to convert document data to user data
+  factory UserDataModel.toMap(Map<String, dynamic> map) {
+    return UserDataModel(
+        phone: map["phone_no"] ?? "",
+        userId: map["userId"] ?? "",
+        name: map["name"] ?? "",
+        profilePic: map["profile_pic"] ?? "",
+        deviceToken: map["device_token"] ?? "",
+        isOnline: map["isOnline"] ?? ""
+        );
+  }
 }
