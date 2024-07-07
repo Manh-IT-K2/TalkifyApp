@@ -1,8 +1,10 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:talkify_app/constant/color.dart';
 import 'package:talkify_app/controller/appwrite_controller.dart';
+import 'package:talkify_app/provider/user_data_provider.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -26,6 +28,12 @@ class _LoginViewState extends State<LoginView> {
     if (formKey1.currentState!.validate()) {
       loginWithOtp(otp: otpController.text, userId: userId).then((value) {
         if (value) {
+          Provider.of<UserDataProvider>(context, listen: false)
+          .setUserId(userId);
+          
+          Provider.of<UserDataProvider>(context,listen: false)
+          .setUserPhoneNumber(phoneNumberController.text);
+
           Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(

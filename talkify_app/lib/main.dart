@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:talkify_app/controller/appwrite_controller.dart';
 import 'package:talkify_app/controller/local_saved_data.dart';
+import 'package:talkify_app/provider/user_data_provider.dart';
 import 'package:talkify_app/view/chat_view.dart';
 import 'package:talkify_app/view/home_view.dart';
 import 'package:talkify_app/view/login_view.dart';
@@ -21,21 +23,26 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Talkify App',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserDataProvider())
+      ],
+      child: MaterialApp(
+        title: 'Talkify App',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
+          useMaterial3: true,
+        ),
+        routes: {
+          "/": (context) => const CheckUserSession(),
+          "/login": (context) => const LoginView(),
+          "/home": (context) => const HomeView(),
+          "/chat": (context) => const ChatView(),
+          "/profile":(context) => const ProfileView(),
+          "/updateProfile": (context) => const UpdateProfileView(),
+          "/search": (context) => const SearchView()
+        },
       ),
-      routes: {
-        "/": (context) => const CheckUserSession(),
-        "/login": (context) => const LoginView(),
-        "/home": (context) => const HomeView(),
-        "/chat": (context) => const ChatView(),
-        "/profile":(context) => const ProfileView(),
-        "/updateProfile": (context) => const UpdateProfileView(),
-        "/search": (context) => const SearchView()
-      },
     );
   }
 }
