@@ -62,7 +62,8 @@ class _CheckUserSessionState extends State<CheckUserSession> {
   void initState(){
     checkSessions().then((value) {
       if(value){
-        Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
+        Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false,
+        arguments: {"title": "add"});
       }else{
         Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => false);
       }

@@ -29,12 +29,14 @@ class _LoginViewState extends State<LoginView> {
       loginWithOtp(otp: otpController.text, userId: userId).then((value) {
         if (value) {
           Provider.of<UserDataProvider>(context, listen: false)
-          .setUserId(userId);
-          
-          Provider.of<UserDataProvider>(context,listen: false)
-          .setUserPhoneNumber(phoneNumberController.text);
+              .setUserId(userId);
 
-          Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
+          Provider.of<UserDataProvider>(context, listen: false)
+              .setUserPhoneNumber(countryCode + phoneNumberController.text);
+
+          Navigator.pushNamedAndRemoveUntil(
+              context, "/updateProfile", (route) => false,
+              arguments: {"title": "add"});
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -115,7 +117,8 @@ class _LoginViewState extends State<LoginView> {
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
                             createPhoneSecction(
-                                    phone: countryCode + phoneNumberController.text)
+                                    phone: countryCode +
+                                        phoneNumberController.text)
                                 .then((value) {
                               if (value != "login_error") {
                                 showDialog(
