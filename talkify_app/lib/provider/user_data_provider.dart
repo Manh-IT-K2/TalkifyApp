@@ -20,7 +20,7 @@ class UserDataProvider extends ChangeNotifier {
   void loadDataFromLocal() {
     _userId = LocalSavedData.getUserId();
     _userName = LocalSavedData.getUserName();
-    _userProfilePic = LocalSavedData.getUserProfile();
+    _userProfilePic = LocalSavedData.getUserProfilePic();
     _userPhoneNumber = LocalSavedData.getUserPhone();
 
     notifyListeners();
@@ -57,9 +57,9 @@ class UserDataProvider extends ChangeNotifier {
   }
 
   // set user profile
-  void setUserProfile(String profile) {
+  void setUserProfilePic(String profile) {
     _userProfilePic = profile;
-    LocalSavedData.saveUserProfile(profile);
+    LocalSavedData.saveUserProfilePic(profile);
     notifyListeners();
   }
 

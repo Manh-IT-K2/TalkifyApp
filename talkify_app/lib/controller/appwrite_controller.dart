@@ -1,7 +1,10 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
+import 'package:talkify_app/main.dart';
 import 'package:talkify_app/model/user_data_model.dart';
+import 'package:talkify_app/provider/user_data_provider.dart';
 
 Client client = Client()
     .setEndpoint('https://cloud.appwrite.io/v1')
@@ -157,10 +160,36 @@ Future<UserDataModel?> getUserDetail({required String userId}) async {
   }
 }
 
+// to update the user data
+Future<bool> updateUserDetail(String pic,
+    {required String userId, required String name}) async {
+  try {
+    final data = await databases.updateDocument(
+        databaseId: db,
+        collectionId: userCollection,
+        documentId: userId,
+        data: {"name": name, "profile_pic": pic});
+    Provider.of<UserDataProvider>(navigatorKey.currentContext!, listen: false)
+        .setUserName(name);
+    Provider.of<UserDataProvider>(navigatorKey.currentContext!, listen: false)
+        .setUserProfilePic(pic);
+    if (kDebugMode) {
+      print("Data userProfile update: $data");
+    }
+    return true;
+  } catch (e) {
+    if (kDebugMode) {
+      print("Can not save userProfileUD to DB: $e");
+    }
+    return false;
+  }
+}
+
 // upload and save image to storage bucket(create new image)
 Future<String?> saveImageToBucket({required InputFile image}) async {
   try {
-    final response = await storage.createFile(bucketId: storageBucket, fileId: ID.unique(), file: image);
+    final response = await storage.createFile(
+        bucketId: storageBucket, fileId: ID.unique(), file: image);
     if (kDebugMode) {
       print("The response after save to bucket $response");
     }

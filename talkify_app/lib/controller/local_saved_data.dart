@@ -40,12 +40,12 @@ class LocalSavedData {
   }
 
   // save the user profile picture
-  static Future<void> saveUserProfile(String profile) async {
+  static Future<void> saveUserProfilePic(String profile) async {
     await preferences!.setString("profile", profile);
   }
 
   // read the user profile picture
-  static String getUserProfile() {
+  static String getUserProfilePic() {
     return preferences!.getString("profile") ?? "";
   }
 

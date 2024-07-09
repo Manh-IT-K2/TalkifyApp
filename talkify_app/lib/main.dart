@@ -10,6 +10,7 @@ import 'package:talkify_app/view/profile_view.dart';
 import 'package:talkify_app/view/search_view.dart';
 import 'package:talkify_app/view/update_profile_view.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => UserDataProvider())
       ],
       child: MaterialApp(
+        navigatorKey: navigatorKey,
         title: 'Talkify App',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
