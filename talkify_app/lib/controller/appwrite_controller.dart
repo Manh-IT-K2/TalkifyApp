@@ -11,9 +11,11 @@ Client client = Client()
 
 const String db = "6680f3c70031774c27d1";
 const String userCollection = "6680f3d20025bd400397";
+const String storageBucket = "668d0d21002933fdfbd4";
 
 Account account = Account(client);
 final Databases databases = Databases(client);
+final Storage storage = Storage(client);
 
 // save phone number to database(while creating a new account)
 
@@ -86,7 +88,7 @@ Future<String> createPhoneSecction({required String phone}) async {
       // create phone token for existing user
       final Token data =
           await account.createPhoneToken(userId: userId, phone: phone);
-           print("phone2: ${data.secret}");
+      print("phone2: ${data.secret}");
       return data.userId;
     }
   } catch (e) {
@@ -132,24 +134,41 @@ Future<bool> checkSessions() async {
 
 // to logout the user and delete session
 Future logoutUser() async {
-    await account.deleteSession(sessionId: "current");
+  await account.deleteSession(sessionId: "current");
 }
 
 // load user data
 Future<UserDataModel?> getUserDetail({required String userId}) async {
-try {
-  final response = await databases.getDocument(databaseId: db, collectionId: userCollection, documentId: userId);
-  if (kDebugMode) {
-    print("Getting user data");
+  try {
+    final response = await databases.getDocument(
+        databaseId: db, collectionId: userCollection, documentId: userId);
+    if (kDebugMode) {
+      print("Getting user data");
+    }
+    if (kDebugMode) {
+      print(response.data);
+    }
+    return UserDataModel.toMap(response.data);
+  } catch (e) {
+    if (kDebugMode) {
+      print("Error in getting user data: $e");
+    }
+    return null;
   }
-  if (kDebugMode) {
-    print(response.data);
-  }
-  return UserDataModel.toMap(response.data);
-} catch (e) {
-  if (kDebugMode) {
-    print("Error in getting user data: $e");
-  }
-  return null;
 }
+
+// upload and save image to storage bucket(create new image)
+Future<String?> saveImageToBucket({required InputFile image}) async {
+  try {
+    final response = await storage.createFile(bucketId: storageBucket, fileId: ID.unique(), file: image);
+    if (kDebugMode) {
+      print("The response after save to bucket $response");
+    }
+    return response.$id;
+  } catch (e) {
+    if (kDebugMode) {
+      print("Error on saving image to bucket: $e");
+    }
+    return null;
+  }
 }
