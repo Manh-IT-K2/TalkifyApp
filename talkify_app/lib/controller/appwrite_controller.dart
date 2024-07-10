@@ -201,3 +201,23 @@ Future<String?> saveImageToBucket({required InputFile image}) async {
     return null;
   }
 }
+
+
+// update an image in bucget : first delete then create new 
+Future<String?> updateImageOnBucket ({
+  required String oldImageId, required InputFile image
+}) async {
+ try {
+    // to delete the old image
+  await storage.deleteFile(bucketId: storageBucket, fileId: oldImageId);
+
+  // create a new image
+  final newImage = saveImageToBucket(image: image);
+  return newImage;
+ } catch (e) {
+   if (kDebugMode) {
+     print("Cannot update / delete image: $e");
+   }
+   return null;
+ }
+}
