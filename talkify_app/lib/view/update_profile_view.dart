@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:appwrite/appwrite.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:talkify_app/constant/color.dart';
+import 'package:talkify_app/controller/appwrite_controller.dart';
 import 'package:talkify_app/provider/user_data_provider.dart';
 
 class UpdateProfileView extends StatefulWidget {
@@ -19,12 +22,17 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
 
   //
   FilePickerResult? _filePickerResult;
+  late String? imageId = "";
+  late String userId = "";
 
   @override
   void initState() {
     // try to load the data from local database
     Future.delayed(Duration.zero, () {
       Provider.of<UserDataProvider>(context, listen: false).loadDataFromLocal();
+      imageId = Provider.of<UserDataProvider>(context, listen: false)
+          .getUserProfilePic;
+      userId = Provider.of<UserDataProvider>(context, listen: false).getUserId;
     });
     super.initState();
   }
@@ -36,6 +44,46 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
     setState(() {
       _filePickerResult = result;
     });
+  }
+
+  // upload user profile image and save it to bucket and database
+  Future uploadProfileImage() async {
+    try {
+      if (_filePickerResult != null && _filePickerResult!.files.isNotEmpty) {
+        PlatformFile file = _filePickerResult!.files.first;
+        final fileByes = await File(file.path!).readAsBytes();
+        final inputFile =
+            InputFile.fromBytes(bytes: fileByes, filename: file.name);
+
+        // if image already exist for the user profile or not
+        if (imageId != null && userId != "") {
+          //
+          await updateImageOnBucket(oldImageId: imageId!, image: inputFile)
+              .then((value) {
+            if (value != null) {
+              imageId = value;
+            }
+          });
+        } 
+        // create new image and upload to bucket
+        else {
+          await saveImageToBucket(image: inputFile).then((value){
+             if (value != null) {
+              imageId = value;
+            }
+          });
+        }
+      }
+      else {
+        if (kDebugMode) {
+          print("Something went wrong!");
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error on uploading image: $e");
+      }
+    }
   }
 
   @override
