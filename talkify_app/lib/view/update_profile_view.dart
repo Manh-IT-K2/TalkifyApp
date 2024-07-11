@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:talkify_app/constant/color.dart';
@@ -14,6 +17,9 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
 
+  //
+  FilePickerResult? _filePickerResult;
+
   @override
   void initState() {
     // try to load the data from local database
@@ -21,6 +27,15 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
       Provider.of<UserDataProvider>(context, listen: false).loadDataFromLocal();
     });
     super.initState();
+  }
+
+  // to open file picker
+  void _openFilePicker() async {
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(type: FileType.image);
+    setState(() {
+      _filePickerResult = result;
+    });
   }
 
   @override
@@ -46,30 +61,42 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                   const SizedBox(
                     height: 40,
                   ),
-                  Stack(
-                    children: [
-                      CircleAvatar(
-                        radius: 120,
-                        backgroundImage: const Image(
-                          image: AssetImage("assets/image/user.png"),
-                        ).image,
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Container(
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: kPrimaryColor,
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          child: const Icon(
-                            Icons.edit_rounded,
-                            color: Colors.white,
+                  GestureDetector(
+                    onTap: () {
+                      _openFilePicker();
+                    },
+                    child: Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 120,
+                          backgroundColor: Colors.grey.shade200,
+                          backgroundImage: _filePickerResult != null
+                              ? Image(
+                                  image: FileImage(
+                                    File(_filePickerResult!.files.first.path!),
+                                  ),
+                                ).image
+                              : const Image(
+                                  image: AssetImage("assets/image/user.png"),
+                                ).image,
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              color: kPrimaryColor,
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: const Icon(
+                              Icons.edit_rounded,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     height: 20,
