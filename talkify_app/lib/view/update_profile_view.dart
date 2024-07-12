@@ -23,7 +23,10 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
   //
   FilePickerResult? _filePickerResult;
   late String? imageId = "";
-  late String userId = "";
+  late String? userId = "";
+
+  //
+  final _nameKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -156,10 +159,17 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                     margin: const EdgeInsets.all(6),
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    child: TextFormField(
-                      controller: _nameController,
-                      decoration: const InputDecoration(
-                          border: InputBorder.none, hintText: "Enter you name"),
+                    child: Form(
+                      key: _nameKey,
+                      child: TextFormField(
+                        validator: (value){
+                          if(value!.isEmpty) return "Cannot be empty";
+                          return null;
+                        },
+                        controller: _nameController,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none, hintText: "Enter you name"),
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -186,7 +196,17 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                     height: 50,
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        if(_nameKey.currentState!.validate()){
+                          // upload the image if file is picked
+                          if(_filePickerResult != null){
+                            await uploadProfileImage();
+                          }
+
+                          // save the data to database user colection
+                          await updateUserDetail(imageId ?? "", userId: userId!, name: _nameController.text);
+                        }
+                      },
                       child: Text("Update"),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: kPrimaryColor,
