@@ -62,11 +62,22 @@ class _CheckUserSessionState extends State<CheckUserSession> {
 
   @override
   void initState(){
+    Future.delayed(Duration.zero, (){
+      Provider.of<UserDataProvider>(context, listen: false).loadDataFromLocal();
+    });
+   
+    final userName = Provider.of<UserDataProvider>(context, listen: false).getUserName;
+  
     checkSessions().then((value) {
       if(value){
-        Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false,
+        if(userName != null && userName != ""){
+          Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
+        } else {
+          Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false,
         arguments: {"title": "add"});
-      }else{
+        }
+      
+      } else {
         Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => false);
       }
     });

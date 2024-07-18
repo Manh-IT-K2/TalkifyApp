@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:appwrite/appwrite.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,6 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
   void initState() {
     // try to load the data from local database
     Future.delayed(Duration.zero, () {
-      Provider.of<UserDataProvider>(context, listen: false).loadDataFromLocal();
       imageId = Provider.of<UserDataProvider>(context, listen: false)
           .getUserProfilePic;
       userId = Provider.of<UserDataProvider>(context, listen: false).getUserId;
@@ -127,9 +127,8 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                                     File(_filePickerResult!.files.first.path!),
                                   ),
                                 ).image
-                              : const Image(
-                                  image: AssetImage("assets/image/user.png"),
-                                ).image,
+                              : value.getUserProfilePic != "" && value.getUserProfilePic != null
+                              ? const CachedNetworkImageProvider("") : null,
                         ),
                         Positioned(
                           bottom: 0,
@@ -205,9 +204,12 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
 
                           // save the data to database user colection
                           await updateUserDetail(imageId ?? "", userId: userId!, name: _nameController.text);
+
+                          // navigate the user to the home route
+                          Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
                         }
                       },
-                      child: Text("Update"),
+                      child: Text(datapassed["title"] == "edit" ? "Update" : "Continue"),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: kPrimaryColor,
                           foregroundColor: Colors.white),
