@@ -66,9 +66,10 @@ class _CheckUserSessionState extends State<CheckUserSession> {
       Provider.of<UserDataProvider>(context, listen: false).loadDataFromLocal();
     });
    
-    final userName = Provider.of<UserDataProvider>(context, listen: false).getUserName;
+    
   
     checkSessions().then((value) {
+      final userName = Provider.of<UserDataProvider>(context, listen: false).getUserName;
       if(value){
         if(userName != null && userName != ""){
           Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);

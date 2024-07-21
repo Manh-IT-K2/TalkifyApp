@@ -1,5 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:talkify_app/constant/color.dart';
+import 'package:talkify_app/model/user_data_model.dart';
+import 'package:talkify_app/provider/user_data_provider.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -26,10 +30,17 @@ class _HomeViewState extends State<HomeView> {
         actions: [
           GestureDetector(
             onTap: () => Navigator.pushNamed(context, "/profile"),
-            child: CircleAvatar(
-              backgroundImage: const Image(
-                image: AssetImage("assets/image/user.png"),
-              ).image,
+            child: Consumer<UserDataProvider>(
+              builder: (context, value, child) {
+                return CircleAvatar(
+                  backgroundImage: value.getUserProfilePic != null ||
+                          value.getUserProfilePic != ""
+                      ? const CachedNetworkImageProvider("")
+                      : const Image(
+                          image: AssetImage("assets/image/user.png"),
+                        ).image,
+                );
+              },
             ),
           ),
         ],
