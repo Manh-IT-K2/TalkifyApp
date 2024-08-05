@@ -1,3 +1,5 @@
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 class MessageModel {
   final String message;
   final String sender;
@@ -15,4 +17,16 @@ class MessageModel {
       required this.timestamp,
       required this.isSeenByRecevier,
       this.isImage});
+
+  // that will convert document model to message model
+  factory MessageModel.fromMap(Map<String, dynamic> map){
+    return MessageModel(
+      message: map["message"], 
+      sender: map["senderId"], 
+      receiver: map["receiverId"], 
+      timestamp: map["timestamp"], 
+      messageId: map["\$id"],
+      isImage: map["isImage"],
+      isSeenByRecevier: map["isSeenByRecevier"]);
+  }
 }
