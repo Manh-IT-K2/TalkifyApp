@@ -14,6 +14,7 @@ Client client = Client()
 
 const String db = "6680f3c70031774c27d1";
 const String userCollection = "6680f3d20025bd400397";
+const String chatCollection = "66b0f8540016c03e2df2";
 const String storageBucket = "668d0d21002933fdfbd4";
 
 Account account = Account(client);
@@ -249,5 +250,34 @@ Future<DocumentList?> searchUsers({required String searchItem, required String u
       print("Error on search users: $e");
     }
     return null;
+  }
+}
+
+// create a new chat and save to database
+Future createNewChat({
+  required String message,
+  required String senderId,
+  required String receiverId,
+  required bool isImage
+}) async {
+  try {
+    final msg = await databases.createDocument(databaseId: db, collectionId: chatCollection, documentId: ID.unique(), data: {
+      "message" : message,
+      "senderId" : senderId,
+      "receiverId" : receiverId,
+      "timestamp" : DateTime.now().toIso8601String(),
+      "isSeenByRecevier" : false,
+      "isImage" : isImage,
+      "users" : [senderId, receiverId]
+    });
+    if (kDebugMode) {
+      print("Message send");
+    }
+    return true;
+  } catch (e) {
+    if (kDebugMode) {
+      print("Failed to send message :$e");
+    }
+    return false;
   }
 }
