@@ -3,6 +3,8 @@ import 'package:appwrite/models.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:talkify_app/main.dart';
+import 'package:talkify_app/model/chat_data_model.dart';
+import 'package:talkify_app/model/message_model.dart';
 import 'package:talkify_app/model/user_data_model.dart';
 import 'package:talkify_app/provider/user_data_provider.dart';
 
@@ -79,7 +81,8 @@ Future<String> createEmailSession({required String email}) async {
     if (userId == "user_not_exist") {
       //creating a new account
       // final Token data = await account.createPhoneToken(userId: ID.unique(), phone: phone);
-      final Token data = await account.createEmailToken(userId: ID.unique(), email: email);
+      final Token data =
+          await account.createEmailToken(userId: ID.unique(), email: email);
 
       // save the new user to user collection
       saveEmailToDB(email: email, userId: data.userId);
@@ -90,8 +93,9 @@ Future<String> createEmailSession({required String email}) async {
     else {
       // create phone token for existing user
       //final Token data = await account.createPhoneToken(userId: userId, phone: phone);
-      final Token data = await account.createEmailToken(userId: userId, email: email);
-            
+      final Token data =
+          await account.createEmailToken(userId: userId, email: email);
+
       print("email1: ${data.secret}");
       return data.userId;
     }
@@ -106,7 +110,8 @@ Future<String> createEmailSession({required String email}) async {
 // login with otp
 Future<bool> loginWithOtp({required String otp, required String userId}) async {
   try {
-    final Session session = await account.createSession(userId: userId, secret: otp);
+    final Session session =
+        await account.createSession(userId: userId, secret: otp);
     if (kDebugMode) {
       print(session.userId);
     }
@@ -235,12 +240,16 @@ Future<bool> deleteImageFromBucket({required String oldImageId}) async {
 }
 
 // to search all the users from the database
-Future<DocumentList?> searchUsers({required String searchItem, required String userId}) async {
+Future<DocumentList?> searchUsers(
+    {required String searchItem, required String userId}) async {
   try {
-    final DocumentList users = await databases.listDocuments(databaseId: db, collectionId: userCollection, queries: [
-      Query.search("email", searchItem),
-      Query.notEqual("userId", userId)
-    ]);
+    final DocumentList users = await databases.listDocuments(
+        databaseId: db,
+        collectionId: userCollection,
+        queries: [
+          Query.search("email", searchItem),
+          Query.notEqual("userId", userId)
+        ]);
     if (kDebugMode) {
       print("Total match users ${users.total}");
     }
@@ -254,22 +263,25 @@ Future<DocumentList?> searchUsers({required String searchItem, required String u
 }
 
 // create a new chat and save to database
-Future createNewChat({
-  required String message,
-  required String senderId,
-  required String receiverId,
-  required bool isImage
-}) async {
+Future createNewChat(
+    {required String message,
+    required String senderId,
+    required String receiverId,
+    required bool isImage}) async {
   try {
-    final msg = await databases.createDocument(databaseId: db, collectionId: chatCollection, documentId: ID.unique(), data: {
-      "message" : message,
-      "senderId" : senderId,
-      "receiverId" : receiverId,
-      "timestamp" : DateTime.now().toIso8601String(),
-      "isSeenByRecevier" : false,
-      "isImage" : isImage,
-      "users" : [senderId, receiverId]
-    });
+    final msg = await databases.createDocument(
+        databaseId: db,
+        collectionId: chatCollection,
+        documentId: ID.unique(),
+        data: {
+          "message": message,
+          "senderId": senderId,
+          "receiverId": receiverId,
+          "timestamp": DateTime.now().toIso8601String(),
+          "isSeenByRecevier": false,
+          "isImage": isImage,
+          "users": [senderId, receiverId]
+        });
     if (kDebugMode) {
       print("Message send");
     }
@@ -279,5 +291,51 @@ Future createNewChat({
       print("Failed to send message :$e");
     }
     return false;
+  }
+}
+
+// to list all the chats belonging to the current user
+Future<Map<String, List<ChatDataModel>>?> currentUserChats(
+    String userId) async {
+  try {
+    var results = await databases
+        .listDocuments(databaseId: db, collectionId: chatCollection, queries: [
+      Query.or(
+          [Query.equal("senderId", userId), Query.equal("receiverId", userId)]),
+      Query.orderDesc("timestamp")
+    ]);
+    final DocumentList chatDocuments = results;
+    if (kDebugMode) {
+      print("Chat documents ${chatDocuments.total} and documents ${chatDocuments.documents.length}");
+    }
+
+    Map<String, List<ChatDataModel>> chats = {};
+
+    if(chatDocuments.documents.isNotEmpty){
+      for(var i = 0; i < chatDocuments.documents.length; i++){
+        var doc = chatDocuments.documents[i];
+        String sender = doc.data["senderId"];
+        String receiver = doc.data["receiverId"];
+
+        MessageModel message = MessageModel.fromMap(doc.data);
+
+        List<UserDataModel> users = [];
+        for(var user in doc.data["users"]){
+          users.add(UserDataModel.toMap(user));
+        }
+
+        String key = (sender == userId) ? receiver : sender;
+        if(chats[key] == null){
+          chats[key] = [];
+        }
+        chats[key]!.add(ChatDataModel(message: message, users: users));
+      }
+    }
+    return chats;
+  } catch (e) {
+    if (kDebugMode) {
+      print("Error in reading current user chats");
+    }
+    return null;
   }
 }
