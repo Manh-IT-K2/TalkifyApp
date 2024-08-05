@@ -238,7 +238,7 @@ Future<DocumentList?> searchUsers({required String searchItem, required String u
   try {
     final DocumentList users = await databases.listDocuments(databaseId: db, collectionId: userCollection, queries: [
       Query.search("email", searchItem),
-      Query.notEqual("email", userId)
+      Query.notEqual("userId", userId)
     ]);
     if (kDebugMode) {
       print("Total match users ${users.total}");
