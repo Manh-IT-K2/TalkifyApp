@@ -19,7 +19,7 @@ class UpdateProfileView extends StatefulWidget {
 
 class _UpdateProfileViewState extends State<UpdateProfileView> {
   TextEditingController _nameController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
 
   //
   FilePickerResult? _filePickerResult;
@@ -33,9 +33,11 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
   void initState() {
     // try to load the data from local database
     Future.delayed(Duration.zero, () {
+      userId = Provider.of<UserDataProvider>(context, listen: false).getUserId;
+      Provider.of<UserDataProvider>(context, listen: false)
+          .loadUserData(userId!);
       imageId = Provider.of<UserDataProvider>(context, listen: false)
           .getUserProfilePic;
-      userId = Provider.of<UserDataProvider>(context, listen: false).getUserId;
     });
     super.initState();
   }
@@ -67,17 +69,16 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
               imageId = value;
             }
           });
-        } 
+        }
         // create new image and upload to bucket
         else {
-          await saveImageToBucket(image: inputFile).then((value){
-             if (value != null) {
+          await saveImageToBucket(image: inputFile).then((value) {
+            if (value != null) {
               imageId = value;
             }
           });
         }
-      }
-      else {
+      } else {
         if (kDebugMode) {
           print("Something went wrong!");
         }
@@ -96,7 +97,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
     return Consumer<UserDataProvider>(
       builder: (context, value, child) {
         _nameController.text = value.getUserName;
-        _phoneController.text = value.getUserPhoneNumber;
+        _emailController.text = value.getUserEmail;
         return Scaffold(
           appBar: AppBar(
             title:
@@ -127,8 +128,10 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                                     File(_filePickerResult!.files.first.path!),
                                   ),
                                 ).image
-                              : value.getUserProfilePic != "" && value.getUserProfilePic != null
-                              ? const CachedNetworkImageProvider("") : null,
+                              : value.getUserProfilePic != "" &&
+                                      value.getUserProfilePic != null
+                                  ? CachedNetworkImageProvider("https://cloud.appwrite.io/v1/storage/buckets/668d0d21002933fdfbd4/files/${value.getUserProfilePic}/view?project=6680f2b1003440efdcfe&mode=admin")
+                                  : null,
                         ),
                         Positioned(
                           bottom: 0,
@@ -161,13 +164,14 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                     child: Form(
                       key: _nameKey,
                       child: TextFormField(
-                        validator: (value){
-                          if(value!.isEmpty) return "Cannot be empty";
+                        validator: (value) {
+                          if (value!.isEmpty) return "Cannot be empty";
                           return null;
                         },
                         controller: _nameController,
                         decoration: const InputDecoration(
-                            border: InputBorder.none, hintText: "Enter you name"),
+                            border: InputBorder.none,
+                            hintText: "Enter you name"),
                       ),
                     ),
                   ),
@@ -182,10 +186,10 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     child: TextFormField(
-                      controller: _phoneController,
+                      controller: _emailController,
                       enabled: false,
                       decoration: const InputDecoration(
-                          border: InputBorder.none, hintText: "Phone number"),
+                          border: InputBorder.none, hintText: "email"),
                     ),
                   ),
                   const SizedBox(
@@ -196,20 +200,24 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () async {
-                        if(_nameKey.currentState!.validate()){
+                        if (_nameKey.currentState!.validate()) {
                           // upload the image if file is picked
-                          if(_filePickerResult != null){
+                          if (_filePickerResult != null) {
                             await uploadProfileImage();
                           }
 
                           // save the data to database user colection
-                          await updateUserDetail(imageId ?? "", userId: userId!, name: _nameController.text);
+                          await updateUserDetail(imageId ?? "",
+                              userId: userId!, name: _nameController.text);
 
                           // navigate the user to the home route
-                          Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, "/home", (route) => false);
                         }
                       },
-                      child: Text(datapassed["title"] == "edit" ? "Update" : "Continue"),
+                      child: Text(datapassed["title"] == "edit"
+                          ? "Update"
+                          : "Continue"),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: kPrimaryColor,
                           foregroundColor: Colors.white),

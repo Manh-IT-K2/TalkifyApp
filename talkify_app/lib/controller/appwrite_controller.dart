@@ -20,17 +20,16 @@ Account account = Account(client);
 final Databases databases = Databases(client);
 final Storage storage = Storage(client);
 
-// save phone number to database(while creating a new account)
-
-Future savePhoneToDB({required String phoneNo, required String userId}) async {
+// save email number to database(while creating a new account)
+Future saveEmailToDB({required String email, required String userId}) async {
   try {
     final response = await databases.createDocument(
         databaseId: db,
         collectionId: userCollection,
         documentId: userId,
-        data: {"phone_no": phoneNo, "userId": userId});
+        data: {"email": email, "userId": userId});
     if (kDebugMode) {
-      print(response);
+      print("success: $response");
     }
     return true;
   } on AppwriteException catch (e) {
@@ -42,15 +41,15 @@ Future savePhoneToDB({required String phoneNo, required String userId}) async {
 }
 
 // check whether phone number exits in database or not
-Future<String> checkPhoneNumber({required String phoneNo}) async {
+Future<String> checkEmail({required String email}) async {
   try {
     final DocumentList matchUser = await databases.listDocuments(
         databaseId: db,
         collectionId: userCollection,
-        queries: [Query.equal("phone_no", phoneNo)]);
+        queries: [Query.equal("email", email)]);
     if (matchUser.total > 0) {
       final Document user = matchUser.documents[0];
-      if (user.data["phone_no"] != null || user.data["phone_no"] != "") {
+      if (user.data["email"] != null || user.data["email"] != "") {
         return user.data["userId"];
       } else {
         if (kDebugMode) {
@@ -72,31 +71,32 @@ Future<String> checkPhoneNumber({required String phoneNo}) async {
   }
 }
 
-// create  a phone secction, send otp to the phone number
-Future<String> createPhoneSecction({required String phone}) async {
+// create  a phone session, send otp to the phone number
+Future<String> createEmailSession({required String email}) async {
   try {
-    final userId = await checkPhoneNumber(phoneNo: phone);
+    final userId = await checkEmail(email: email);
     if (userId == "user_not_exist") {
       //creating a new account
-      final Token data =
-          await account.createPhoneToken(userId: ID.unique(), phone: phone);
+      // final Token data = await account.createPhoneToken(userId: ID.unique(), phone: phone);
+      final Token data = await account.createEmailToken(userId: ID.unique(), email: email);
 
       // save the new user to user collection
-      savePhoneToDB(phoneNo: phone, userId: data.userId);
-      print("phone: ${data.secret}");
+      saveEmailToDB(email: email, userId: data.userId);
+      print("email: ${data.secret}");
       return data.userId;
     }
     // if user is an existing user
     else {
       // create phone token for existing user
-      final Token data =
-          await account.createPhoneToken(userId: userId, phone: phone);
-      print("phone2: ${data.secret}");
+      //final Token data = await account.createPhoneToken(userId: userId, phone: phone);
+      final Token data = await account.createEmailToken(userId: userId, email: email);
+            
+      print("email1: ${data.secret}");
       return data.userId;
     }
   } catch (e) {
     if (kDebugMode) {
-      print("Error on cretae phone session: $e");
+      print("Error on cretae email session: $e");
     }
     return "login_error";
   }
@@ -105,8 +105,7 @@ Future<String> createPhoneSecction({required String phone}) async {
 // login with otp
 Future<bool> loginWithOtp({required String otp, required String userId}) async {
   try {
-    final Session session =
-        await account.updatePhoneSession(userId: userId, secret: otp);
+    final Session session = await account.createSession(userId: userId, secret: otp);
     if (kDebugMode) {
       print(session.userId);
     }
@@ -231,5 +230,24 @@ Future<bool> deleteImageFromBucket({required String oldImageId}) async {
       print("Cannot update / delete image: $e");
     }
     return false;
+  }
+}
+
+// to search all the users from the database
+Future<DocumentList?> searchUsers({required String searchItem, required String userId}) async {
+  try {
+    final DocumentList users = await databases.listDocuments(databaseId: db, collectionId: userCollection, queries: [
+      Query.search("email", searchItem),
+      Query.notEqual("email", userId)
+    ]);
+    if (kDebugMode) {
+      print("Total match users ${users.total}");
+    }
+    return users;
+  } catch (e) {
+    if (kDebugMode) {
+      print("Error on search users: $e");
+    }
+    return null;
   }
 }

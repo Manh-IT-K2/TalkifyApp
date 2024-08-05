@@ -19,11 +19,9 @@ class _LoginViewState extends State<LoginView> {
   final formKey1 = GlobalKey<FormState>();
 
   //
-  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController otpController = TextEditingController();
 
-  //
-  String countryCode = "+84";
   void handleOtpSubmit(String userId, BuildContext context) {
     if (formKey1.currentState!.validate()) {
       loginWithOtp(otp: otpController.text, userId: userId).then((value) {
@@ -32,7 +30,7 @@ class _LoginViewState extends State<LoginView> {
               .setUserId(userId);
 
           Provider.of<UserDataProvider>(context, listen: false)
-              .setUserPhoneNumber(countryCode + phoneNumberController.text);
+              .setUserEmail(emailController.text);
 
           Navigator.pushNamedAndRemoveUntil(
               context, "/updateProfile", (route) => false,
@@ -74,7 +72,7 @@ class _LoginViewState extends State<LoginView> {
                           TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
                     ),
                     const Text(
-                      "Enter your phone number to continute.",
+                      "Enter your email to continute.",
                     ),
                     const SizedBox(
                       height: 20,
@@ -82,25 +80,14 @@ class _LoginViewState extends State<LoginView> {
                     Form(
                       key: formKey,
                       child: TextFormField(
-                        controller: phoneNumberController,
-                        keyboardType: TextInputType.phone,
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
                         validator: (value) {
-                          if (value!.length != 9) {
-                            return "Invalid phone number";
-                          }
-                          return null;
+                          
                         },
                         decoration: InputDecoration(
-                          prefixIcon: CountryCodePicker(
-                            onChanged: (value) {
-                              if (kDebugMode) {
-                                print(value.dialCode);
-                              }
-                              countryCode = value.dialCode!;
-                            },
-                            initialSelection: "VN",
-                          ),
-                          labelText: "Enter you phone number",
+                    
+                          labelText: "Enter you email",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -116,9 +103,8 @@ class _LoginViewState extends State<LoginView> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
-                            createPhoneSecction(
-                                    phone: countryCode +
-                                        phoneNumberController.text)
+                            createEmailSession(
+                                    email: emailController.text)
                                 .then((value) {
                               if (value != "login_error") {
                                 showDialog(

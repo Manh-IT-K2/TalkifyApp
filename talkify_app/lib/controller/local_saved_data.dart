@@ -29,14 +29,14 @@ class LocalSavedData {
     return preferences!.getString("userName") ?? "";
   }
 
-  // save the user phone
-  static Future<void> saveUserPhone(String phone) async {
-    await preferences!.setString("phone", phone);
+  // save the user email
+  static Future<void> saveUserEmail(String email) async {
+    await preferences!.setString("email", email);
   }
 
-  // read the user phone
-  static String getUserPhone() {
-    return preferences!.getString("phone") ?? "";
+  // read the user email
+  static String getUserEmail() {
+    return preferences!.getString("email") ?? "";
   }
 
   // save the user profile picture
@@ -50,10 +50,10 @@ class LocalSavedData {
   }
 
   // clear all the saved data
-  static clearAllData() {
-    preferences!.clear();
+  static clearAllData() async {
+    final bool data = await preferences!.clear();
     if (kDebugMode) {
-      print("Cleared all data from local!");
+      print("Cleared all data from local: $data");
     }
   }
 }

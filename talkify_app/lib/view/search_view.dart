@@ -32,7 +32,7 @@ class _SearchViewState extends State<SearchView> {
                   child: TextField(
                     decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: "Enter phone number"),
+                        hintText: "Enter email"),
                   ),
                 ),
                 Icon(Icons.search),

@@ -7,13 +7,13 @@ class UserDataProvider extends ChangeNotifier {
   String _userId = "";
   String _userName = "";
   String _userProfilePic = "";
-  String _userPhoneNumber = "";
+  String _userEmail = "";
   String _userDeviceToken = "";
 
   String get getUserId => _userId;
   String get getUserName => _userName;
   String get getUserProfilePic => _userProfilePic;
-  String get getUserPhoneNumber => _userPhoneNumber;
+  String get getUserEmail => _userEmail;
   String get getUserDeviceToken => _userDeviceToken;
 
 // to load the data from the device
@@ -21,7 +21,7 @@ class UserDataProvider extends ChangeNotifier {
     _userId = LocalSavedData.getUserId();
     _userName = LocalSavedData.getUserName();
     _userProfilePic = LocalSavedData.getUserProfilePic();
-    _userPhoneNumber = LocalSavedData.getUserPhone();
+    _userEmail = LocalSavedData.getUserEmail();
 
     notifyListeners();
   }
@@ -50,9 +50,9 @@ class UserDataProvider extends ChangeNotifier {
   }
 
   // set user phone
-  void setUserPhoneNumber(String phone) {
-    _userPhoneNumber = phone;
-    LocalSavedData.saveUserPhone(phone);
+  void setUserEmail(String email) {
+    _userEmail = email;
+    LocalSavedData.saveUserEmail(email);
     notifyListeners();
   }
 
