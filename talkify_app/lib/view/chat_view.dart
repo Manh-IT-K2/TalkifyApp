@@ -171,10 +171,18 @@ class _ChatViewState extends State<ChatView> {
                                     onPressed: () {},
                                     child: const Text("Edit"),
                                   ),
-                                  TextButton(
-                                    onPressed: () {},
-                                    child: const Text("Delete"),
-                                  ),
+                                  msg.sender == currentUserId
+                                      ? TextButton(
+                                          onPressed: () {
+                                            Provider.of<ChatProvider>(context,
+                                                    listen: false)
+                                                .deleteMessage(msg,
+                                                    currentUserId, msg.message);
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("Delete"),
+                                        )
+                                      : const SizedBox(),
                                   TextButton(
                                     onPressed: () {
                                       Navigator.pop(context);
