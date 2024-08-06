@@ -339,3 +339,14 @@ Future<Map<String, List<ChatDataModel>>?> currentUserChats(
     return null;
   }
 }
+
+// to delete the chat from database chat collection 
+Future deleteCurrentUserChat({required String chatId}) async {
+  try {
+    await databases.deleteDocument(databaseId: db, collectionId: chatCollection, documentId: chatId);
+  } catch (e) {
+    if (kDebugMode) {
+      print("Error on deleting chat mesage : $e");
+    }
+  }
+}
