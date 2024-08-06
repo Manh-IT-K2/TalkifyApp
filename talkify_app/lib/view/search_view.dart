@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:talkify_app/constant/color.dart';
 import 'package:talkify_app/controller/appwrite_controller.dart';
+import 'package:talkify_app/model/user_data_model.dart';
 import 'package:talkify_app/provider/user_data_provider.dart';
 
 class SearchView extends StatefulWidget {
@@ -86,6 +87,11 @@ class _SearchViewState extends State<SearchView> {
                   itemCount: searchedUsers.documents.length,
                   itemBuilder: (context, index) {
                     return ListTile(
+                      onTap: (){
+                        Navigator.pushNamed(context, "/chat", 
+                        arguments: UserDataModel.toMap(searchedUsers.documents[index].data)
+                        );
+                      },
                       leading: CircleAvatar(
                         backgroundImage: searchedUsers
                                         .documents[index].data["profile_pic"] !=

@@ -1,7 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:talkify_app/constant/chat_message.dart';
 import 'package:talkify_app/constant/color.dart';
+import 'package:talkify_app/controller/appwrite_controller.dart';
 import 'package:talkify_app/model/message_model.dart';
+import 'package:talkify_app/model/user_data_model.dart';
+import 'package:talkify_app/provider/chat_provider.dart';
+import 'package:talkify_app/provider/user_data_provider.dart';
 
 class ChatView extends StatefulWidget {
   const ChatView({super.key});
@@ -12,6 +18,9 @@ class ChatView extends StatefulWidget {
 
 class _ChatViewState extends State<ChatView> {
   TextEditingController messageController = TextEditingController();
+
+  late String currentUserId;
+  late String currentUserName;
 
   List messages = [
     MessageModel(
@@ -40,78 +49,182 @@ class _ChatViewState extends State<ChatView> {
         isSeenByRecevier: false,
         isImage: true),
   ];
+
+  @override
+  void initState() {
+    currentUserId =
+        Provider.of<UserDataProvider>(context, listen: false).getUserId;
+    currentUserName =
+        Provider.of<UserDataProvider>(context, listen: false).getUserName;
+    Provider.of<ChatProvider>(context, listen: false).loadChats(currentUserId);
+    super.initState();
+  }
+
+  // to send simple text message
+  void _sendMessage({required UserDataModel receiver}) {
+    if (messageController.text.isNotEmpty) {
+      setState(() {
+        createNewChat(
+                message: messageController.text,
+                senderId: currentUserId,
+                receiverId: receiver.userId,
+                isImage: false)
+            .then((value) {
+          if (value) {
+            Provider.of<ChatProvider>(context, listen: false).addMessage(
+                MessageModel(
+                    message: messageController.text,
+                    sender: currentUserId,
+                    receiver: receiver.userId,
+                    timestamp: DateTime.now(),
+                    isSeenByRecevier: false),
+                currentUserId,
+                [UserDataModel(email: "", userId: currentUserId), receiver]);
+
+            messageController.clear();
+          }
+        });
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kBackgroundColor,
-      appBar: AppBar(
-        backgroundColor: kBackgroundColor,
-        leadingWidth: 40,
-        scrolledUnderElevation: 0,
-        elevation: 0,
-        title: const Row(
-          children: [
-            CircleAvatar(),
-            SizedBox(
-              width: 10,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    UserDataModel receiver =
+        ModalRoute.of(context)!.settings.arguments as UserDataModel;
+    return Consumer<ChatProvider>(
+      builder: (context, value, child) {
+        final userAndOtherChats = value.getAllChats[receiver.userId] ?? [];
+        return Scaffold(
+          backgroundColor: kBackgroundColor,
+          appBar: AppBar(
+            backgroundColor: kBackgroundColor,
+            leadingWidth: 40,
+            scrolledUnderElevation: 0,
+            elevation: 0,
+            title: Row(
               children: [
-                Text(
-                  "Other User",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
+                CircleAvatar(
+                  backgroundImage: receiver.profilePic == "" ||
+                          receiver.profilePic == null
+                      ? const Image(image: AssetImage("assets/image/user.png"))
+                          .image
+                      : CachedNetworkImageProvider(
+                          "https://cloud.appwrite.io/v1/storage/buckets/668d0d21002933fdfbd4/files/${receiver.profilePic}/view?project=6680f2b1003440efdcfe&mode=admin"),
                 ),
-                Text(
-                  "Online",
-                  style: TextStyle(
-                    fontSize: 12,
-                  ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      receiver.name!,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      userAndOtherChats == true ? "Online" : "Offline",
+                      style: const TextStyle(
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              child: ListView.builder(
-                itemCount: messages.length,
-                itemBuilder: (context, index) => ChatMessage(
-                    msg: messages[index], currentUser: "101", isImage: true),
+          ),
+          body: Column(
+            children: [
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: ListView.builder(
+                      reverse: true,
+                      itemCount: userAndOtherChats.length,
+                      itemBuilder: (context, index) {
+                        final msg = userAndOtherChats[
+                                userAndOtherChats.length - 1 - index]
+                            .message;
+                        return GestureDetector(
+                          onLongPress: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: msg.isImage == true
+                                    ? Text(msg.sender == currentUserId
+                                        ? "Chose what you want to do with this image."
+                                        : "This image cant be modified.")
+                                    : Text(
+                                        "${msg.message.length > 19 ? msg.message.substring(0, 19) + "..." : msg.message}"),
+                                content: msg.isImage == true
+                                    ? Text(msg.sender == currentUserId
+                                        ? "Delete this image."
+                                        : "This image cant be deleted.")
+                                    : Text(msg.sender == currentUserId
+                                        ? "Chose what you want to do with this message."
+                                        : "This message cant be modified."),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {},
+                                    child: const Text("Edit"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {},
+                                    child: const Text("Delete"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Cancel"),
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                          child: ChatMessage(
+                            isImage: msg.isImage ?? false,
+                            msg: msg,
+                            currentUser: currentUserId,
+                          ),
+                        );
+                      }),
+                ),
               ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.all(6),
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: kSecondaryColor,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: messageController,
-                    decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Type a message ..."),
-                  ),
+              Container(
+                margin: const EdgeInsets.all(6),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: kSecondaryColor,
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                IconButton(onPressed: (){}, icon: const Icon(Icons.image)),
-                IconButton(onPressed: (){}, icon: const Icon(Icons.send))
-              ],
-            ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: messageController,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Type a message ..."),
+                      ),
+                    ),
+                    IconButton(onPressed: () {}, icon: const Icon(Icons.image)),
+                    IconButton(
+                      onPressed: () {
+                        _sendMessage(receiver: receiver);
+                      },
+                      icon: const Icon(Icons.send),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

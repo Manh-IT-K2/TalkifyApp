@@ -334,7 +334,7 @@ Future<Map<String, List<ChatDataModel>>?> currentUserChats(
     return chats;
   } catch (e) {
     if (kDebugMode) {
-      print("Error in reading current user chats");
+      print("Error in reading current user chats : $e");
     }
     return null;
   }

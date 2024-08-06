@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:talkify_app/controller/appwrite_controller.dart';
 import 'package:talkify_app/controller/local_saved_data.dart';
+import 'package:talkify_app/provider/chat_provider.dart';
 import 'package:talkify_app/provider/user_data_provider.dart';
 import 'package:talkify_app/view/chat_view.dart';
 import 'package:talkify_app/view/home_view.dart';
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => UserDataProvider())
+        ChangeNotifierProvider(create: (context) => UserDataProvider()),
+        ChangeNotifierProvider(create: (context) => ChatProvider())
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
