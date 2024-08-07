@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:talkify_app/constant/color.dart';
 import 'package:talkify_app/constant/fomate_date.dart';
+import 'package:talkify_app/controller/appwrite_controller.dart';
 import 'package:talkify_app/model/chat_data_model.dart';
 import 'package:talkify_app/model/user_data_model.dart';
 import 'package:talkify_app/provider/chat_provider.dart';
@@ -23,6 +24,7 @@ class _HomeViewState extends State<HomeView> {
     currentUserId =
         Provider.of<UserDataProvider>(context, listen: false).getUserId;
     Provider.of<ChatProvider>(context, listen: false).loadChats(currentUserId);
+    subcscribeToRealtime(userId: currentUserId);
     super.initState();
   }
 
@@ -114,7 +116,7 @@ class _HomeViewState extends State<HomeView> {
                     ),
                     title: Text(otherUser.name!),
                     subtitle: Text(
-                        "${chatData[totalChat - 1].message.sender == currentUserId ? "You: " : ""}${chatData[totalChat - 1].message.isImage == true ? "Sent an image" : chatData[totalChat - 1].message.message}"),
+                        "${chatData[totalChat - 1].message.sender == currentUserId ? "You: " : ""}${chatData[totalChat - 1].message.isImage == true ? "Sent an image" : chatData[totalChat - 1].message.message}", overflow: TextOverflow.ellipsis,),
                     trailing: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,

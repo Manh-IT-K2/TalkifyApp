@@ -6,6 +6,7 @@ import 'package:talkify_app/main.dart';
 import 'package:talkify_app/model/chat_data_model.dart';
 import 'package:talkify_app/model/message_model.dart';
 import 'package:talkify_app/model/user_data_model.dart';
+import 'package:talkify_app/provider/chat_provider.dart';
 import 'package:talkify_app/provider/user_data_provider.dart';
 
 Client client = Client()
@@ -22,6 +23,44 @@ const String storageBucket = "668d0d21002933fdfbd4";
 Account account = Account(client);
 final Databases databases = Databases(client);
 final Storage storage = Storage(client);
+final Realtime realtime = Realtime(client);
+
+RealtimeSubscription? subscription;
+// to subscribe to realtime changes
+subcscribeToRealtime({required String userId}){
+  subscription = realtime.subscribe(
+    ["databases.$db.collections.$chatCollection.documents", "databases.$db.collections.$userCollection.documents"]
+  );
+
+  if (kDebugMode) {
+    print("Subscribing to realtime");
+  }
+  subscription!.stream.listen((data){
+    if (kDebugMode) {
+      print("Some event happend");
+    }
+    // if (kDebugMode) {
+    //   print(data.events);
+    // }
+    // if (kDebugMode) {
+    //   print(data.payload);
+    // }
+    final firstItem = data.events[0].split(".");
+    final eventType = firstItem[firstItem.length -1];
+    if (kDebugMode) {
+      print("Event type is $eventType");
+    }
+    if(eventType == "create"){
+      Provider.of<ChatProvider>(navigatorKey.currentState!.context,listen: false).loadChats(userId);
+    } else if(eventType == "update"){
+      Provider.of<ChatProvider>(navigatorKey.currentState!.context,listen: false).loadChats(userId);
+    } else {
+      if(eventType == "delete"){
+      Provider.of<ChatProvider>(navigatorKey.currentState!.context,listen: false).loadChats(userId);
+    }
+    }
+  });
+}
 
 // save email number to database(while creating a new account)
 Future saveEmailToDB({required String email, required String userId}) async {

@@ -177,7 +177,7 @@ class _ChatViewState extends State<ChatView> {
                                             Provider.of<ChatProvider>(context,
                                                     listen: false)
                                                 .deleteMessage(msg,
-                                                    currentUserId, msg.message);
+                                                    currentUserId);
                                             Navigator.pop(context);
                                           },
                                           child: const Text("Delete"),
