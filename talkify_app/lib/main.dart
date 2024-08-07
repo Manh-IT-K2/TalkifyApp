@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:talkify_app/controller/appwrite_controller.dart';
@@ -12,9 +13,56 @@ import 'package:talkify_app/view/search_view.dart';
 import 'package:talkify_app/view/update_profile_view.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
+
+class LifecycleEventHandler extends WidgetsBindingObserver {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    String currentUserId = Provider.of<UserDataProvider>(
+            navigatorKey.currentState!.context,
+            listen: false)
+        .getUserId;
+    super.didChangeAppLifecycleState(state);
+
+    switch (state) {
+      case AppLifecycleState.resumed:
+        updateOnlineStatus(status: true, userId: currentUserId);
+        if (kDebugMode) {
+          print("App resumed");
+        }
+        break;
+      case AppLifecycleState.inactive:
+        updateOnlineStatus(status: false, userId: currentUserId);
+        if (kDebugMode) {
+          print("App inactive");
+        }
+        break;
+      case AppLifecycleState.paused:
+        updateOnlineStatus(status: false, userId: currentUserId);
+        if (kDebugMode) {
+          print("App paused");
+        }
+        break;
+       case AppLifecycleState.detached:
+        updateOnlineStatus(status: false, userId: currentUserId);
+        if (kDebugMode) {
+          print("App detached");
+        }
+        break;
+      case AppLifecycleState.hidden:
+        updateOnlineStatus(status: false, userId: currentUserId);
+        if (kDebugMode) {
+          print("App hidden");
+        }
+        break;
+      default:
+    }
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+ WidgetsBinding.instance.addObserver(LifecycleEventHandler());
+ 
   await LocalSavedData.init();
   runApp(const MyApp());
 }
@@ -42,7 +90,7 @@ class MyApp extends StatelessWidget {
           "/login": (context) => const LoginView(),
           "/home": (context) => const HomeView(),
           "/chat": (context) => const ChatView(),
-          "/profile":(context) => const ProfileView(),
+          "/profile": (context) => const ProfileView(),
           "/updateProfile": (context) => const UpdateProfileView(),
           "/search": (context) => const SearchView()
         },
@@ -50,7 +98,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 
 //
 class CheckUserSession extends StatefulWidget {
@@ -61,31 +108,29 @@ class CheckUserSession extends StatefulWidget {
 }
 
 class _CheckUserSessionState extends State<CheckUserSession> {
-
   @override
-  void initState(){
-    Future.delayed(Duration.zero, (){
+  void initState() {
+    Future.delayed(Duration.zero, () {
       Provider.of<UserDataProvider>(context, listen: false).loadDataFromLocal();
     });
-   
-    
-  
+
     checkSessions().then((value) {
-      final userName = Provider.of<UserDataProvider>(context, listen: false).getUserName;
-      if(value){
-        if(userName != null && userName != ""){
+      final userName =
+          Provider.of<UserDataProvider>(context, listen: false).getUserName;
+      if (value) {
+        if (userName != null && userName != "") {
           Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
         } else {
           Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false,
-        arguments: {"title": "add"});
+              arguments: {"title": "add"});
         }
-      
       } else {
         Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => false);
       }
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
