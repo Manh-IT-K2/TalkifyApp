@@ -420,3 +420,23 @@ Future editChat({required String chatId, required String message}) async {
     }
   }
 }
+
+// To update isSeen message status
+Future updateIsSeen({required List<String> chatsIds}) async {
+  try {
+    for (var chatId in chatsIds) {
+      await databases.updateDocument(
+          databaseId: db,
+          collectionId: chatCollection,
+          documentId: chatId,
+          data: {"isSeenByRecevier": true});
+      if (kDebugMode) {
+        print("Update is Seen");
+      }
+    }
+  } catch (e) {
+    if (kDebugMode) {
+      print("Error in update isSeen : $e");
+    }
+  }
+}

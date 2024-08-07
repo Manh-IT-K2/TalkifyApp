@@ -95,6 +95,13 @@ class _ChatViewState extends State<ChatView> {
     return Consumer<ChatProvider>(
       builder: (context, value, child) {
         final userAndOtherChats = value.getAllChats[receiver.userId] ?? [];
+        List<String> receiverMsgList = [];
+        for (var chat in userAndOtherChats) {
+          if (chat.message.isSeenByRecevier == false) {
+            receiverMsgList.add(chat.message.messageId!);
+          }
+        }
+        updateIsSeen(chatsIds: receiverMsgList);
         return Scaffold(
           backgroundColor: kBackgroundColor,
           appBar: AppBar(
