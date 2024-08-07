@@ -27,15 +27,16 @@ final Realtime realtime = Realtime(client);
 
 RealtimeSubscription? subscription;
 // to subscribe to realtime changes
-subcscribeToRealtime({required String userId}){
-  subscription = realtime.subscribe(
-    ["databases.$db.collections.$chatCollection.documents", "databases.$db.collections.$userCollection.documents"]
-  );
+subcscribeToRealtime({required String userId}) {
+  subscription = realtime.subscribe([
+    "databases.$db.collections.$chatCollection.documents",
+    "databases.$db.collections.$userCollection.documents"
+  ]);
 
   if (kDebugMode) {
     print("Subscribing to realtime");
   }
-  subscription!.stream.listen((data){
+  subscription!.stream.listen((data) {
     if (kDebugMode) {
       print("Some event happend");
     }
@@ -46,18 +47,24 @@ subcscribeToRealtime({required String userId}){
     //   print(data.payload);
     // }
     final firstItem = data.events[0].split(".");
-    final eventType = firstItem[firstItem.length -1];
+    final eventType = firstItem[firstItem.length - 1];
     if (kDebugMode) {
       print("Event type is $eventType");
     }
-    if(eventType == "create"){
-      Provider.of<ChatProvider>(navigatorKey.currentState!.context,listen: false).loadChats(userId);
-    } else if(eventType == "update"){
-      Provider.of<ChatProvider>(navigatorKey.currentState!.context,listen: false).loadChats(userId);
+    if (eventType == "create") {
+      Provider.of<ChatProvider>(navigatorKey.currentState!.context,
+              listen: false)
+          .loadChats(userId);
+    } else if (eventType == "update") {
+      Provider.of<ChatProvider>(navigatorKey.currentState!.context,
+              listen: false)
+          .loadChats(userId);
     } else {
-      if(eventType == "delete"){
-      Provider.of<ChatProvider>(navigatorKey.currentState!.context,listen: false).loadChats(userId);
-    }
+      if (eventType == "delete") {
+        Provider.of<ChatProvider>(navigatorKey.currentState!.context,
+                listen: false)
+            .loadChats(userId);
+      }
     }
   });
 }
@@ -196,9 +203,9 @@ Future<UserDataModel?> getUserDetail({required String userId}) async {
       print(response.data);
     }
     Provider.of<UserDataProvider>(navigatorKey.currentContext!, listen: false)
-        .setUserName(response.data["name"]?? "");
+        .setUserName(response.data["name"] ?? "");
     Provider.of<UserDataProvider>(navigatorKey.currentContext!, listen: false)
-        .setUserProfilePic(response.data["profile_pic"]?? "");
+        .setUserProfilePic(response.data["profile_pic"] ?? "");
     return UserDataModel.toMap(response.data);
   } catch (e) {
     if (kDebugMode) {
@@ -349,13 +356,14 @@ Future<Map<String, List<ChatDataModel>>?> currentUserChats(
     ]);
     final DocumentList chatDocuments = results;
     if (kDebugMode) {
-      print("Chat documents ${chatDocuments.total} and documents ${chatDocuments.documents.length}");
+      print(
+          "Chat documents ${chatDocuments.total} and documents ${chatDocuments.documents.length}");
     }
 
     Map<String, List<ChatDataModel>> chats = {};
 
-    if(chatDocuments.documents.isNotEmpty){
-      for(var i = 0; i < chatDocuments.documents.length; i++){
+    if (chatDocuments.documents.isNotEmpty) {
+      for (var i = 0; i < chatDocuments.documents.length; i++) {
         var doc = chatDocuments.documents[i];
         String sender = doc.data["senderId"];
         String receiver = doc.data["receiverId"];
@@ -363,12 +371,12 @@ Future<Map<String, List<ChatDataModel>>?> currentUserChats(
         MessageModel message = MessageModel.fromMap(doc.data);
 
         List<UserDataModel> users = [];
-        for(var user in doc.data["users"]){
+        for (var user in doc.data["users"]) {
           users.add(UserDataModel.toMap(user));
         }
 
         String key = (sender == userId) ? receiver : sender;
-        if(chats[key] == null){
+        if (chats[key] == null) {
           chats[key] = [];
         }
         chats[key]!.add(ChatDataModel(message: message, users: users));
@@ -383,13 +391,32 @@ Future<Map<String, List<ChatDataModel>>?> currentUserChats(
   }
 }
 
-// to delete the chat from database chat collection 
+// to delete the chat from database chat collection
 Future deleteCurrentUserChat({required String chatId}) async {
   try {
-    await databases.deleteDocument(databaseId: db, collectionId: chatCollection, documentId: chatId);
+    await databases.deleteDocument(
+        databaseId: db, collectionId: chatCollection, documentId: chatId);
   } catch (e) {
     if (kDebugMode) {
       print("Error on deleting chat mesage : $e");
+    }
+  }
+}
+
+// edit our chat message and update to database
+Future editChat({required String chatId, required String message}) async {
+  try {
+    await databases.updateDocument(
+        databaseId: db,
+        collectionId: chatCollection,
+        documentId: chatId,
+        data: {"message": message});
+    if (kDebugMode) {
+      print("Message update");
+    }
+  } catch (e) {
+    if (kDebugMode) {
+      print("Error on editing message : $e");
     }
   }
 }

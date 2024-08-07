@@ -18,7 +18,7 @@ class ChatView extends StatefulWidget {
 
 class _ChatViewState extends State<ChatView> {
   TextEditingController messageController = TextEditingController();
-
+  TextEditingController editMessageController = TextEditingController();
   late String currentUserId;
   late String currentUserName;
 
@@ -167,17 +167,52 @@ class _ChatViewState extends State<ChatView> {
                                         ? "Chose what you want to do with this message."
                                         : "This message cant be modified."),
                                 actions: [
-                                  TextButton(
-                                    onPressed: () {},
-                                    child: const Text("Edit"),
-                                  ),
+                                  msg.sender == currentUserId
+                                      ? TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            editMessageController.text =
+                                                msg.message;
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    AlertDialog(
+                                                      title: const Text(
+                                                          "Edit this message"),
+                                                      content: TextFormField(
+                                                        controller:
+                                                            editMessageController,
+                                                        maxLines: 10,
+                                                      ),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(context);
+                                                          },
+                                                          child:
+                                                              const Text("Canel"),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            editChat(chatId: msg.messageId!, message: editMessageController.text);
+                                                            Navigator.pop(context);
+                                                          },
+                                                          child:
+                                                              const Text("Ok"),
+                                                        ),
+                                                      ],
+                                                    ));
+                                          },
+                                          child: const Text("Edit"),
+                                        )
+                                      : const SizedBox(),
                                   msg.sender == currentUserId
                                       ? TextButton(
                                           onPressed: () {
                                             Provider.of<ChatProvider>(context,
                                                     listen: false)
-                                                .deleteMessage(msg,
-                                                    currentUserId);
+                                                .deleteMessage(
+                                                    msg, currentUserId);
                                             Navigator.pop(context);
                                           },
                                           child: const Text("Delete"),
