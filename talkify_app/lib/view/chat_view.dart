@@ -1,4 +1,9 @@
+import 'dart:io';
+
+import 'package:appwrite/appwrite.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:talkify_app/constant/chat_message.dart';
@@ -22,33 +27,34 @@ class _ChatViewState extends State<ChatView> {
   late String currentUserId;
   late String currentUserName;
 
-  List messages = [
-    MessageModel(
-        message: "Hello!",
-        sender: "101",
-        receiver: "202",
-        timestamp: DateTime(2024, 1, 1),
-        isSeenByRecevier: true),
-    MessageModel(
-        message: "Hi!",
-        sender: "202",
-        receiver: "101",
-        timestamp: DateTime(2024, 1, 1),
-        isSeenByRecevier: false),
-    MessageModel(
-        message: "How Are You?",
-        sender: "101",
-        receiver: "202",
-        timestamp: DateTime(2024, 1, 1),
-        isSeenByRecevier: false),
-    MessageModel(
-        message: "How Are You?",
-        sender: "101",
-        receiver: "202",
-        timestamp: DateTime(2024, 1, 1),
-        isSeenByRecevier: false,
-        isImage: true),
-  ];
+  FilePickerResult? _filePickerResult;
+  // List messages = [
+  //   MessageModel(
+  //       message: "Hello!",
+  //       sender: "101",
+  //       receiver: "202",
+  //       timestamp: DateTime(2024, 1, 1),
+  //       isSeenByRecevier: true),
+  //   MessageModel(
+  //       message: "Hi!",
+  //       sender: "202",
+  //       receiver: "101",
+  //       timestamp: DateTime(2024, 1, 1),
+  //       isSeenByRecevier: false),
+  //   MessageModel(
+  //       message: "How Are You?",
+  //       sender: "101",
+  //       receiver: "202",
+  //       timestamp: DateTime(2024, 1, 1),
+  //       isSeenByRecevier: false),
+  //   MessageModel(
+  //       message: "How Are You?",
+  //       sender: "101",
+  //       receiver: "202",
+  //       timestamp: DateTime(2024, 1, 1),
+  //       isSeenByRecevier: false,
+  //       isImage: true),
+  // ];
 
   @override
   void initState() {
@@ -58,6 +64,63 @@ class _ChatViewState extends State<ChatView> {
         Provider.of<UserDataProvider>(context, listen: false).getUserName;
     Provider.of<ChatProvider>(context, listen: false).loadChats(currentUserId);
     super.initState();
+  }
+
+  // to open file picker
+  void _openFilePicker(UserDataModel receiver) async {
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(allowMultiple: true, type: FileType.image);
+
+    setState(() {
+      _filePickerResult = result;
+      uploadAllImage(receiver);
+    });
+  }
+
+  // to upload files to our storage bucket and our database
+  void uploadAllImage(UserDataModel receiver) async {
+    if (_filePickerResult != null) {
+      _filePickerResult!.paths.forEach((path) {
+        if (path != null) {
+          var file = File(path);
+          final fileBytes = file.readAsBytesSync();
+          final inputFile = InputFile.fromBytes(
+              bytes: fileBytes, filename: file.path.split("/").last);
+
+          // saving image to our storage bucket
+          saveImageToBucket(image: inputFile).then((imageId) {
+            if (imageId != null) {
+              createNewChat(
+                      message: imageId,
+                      senderId: currentUserId,
+                      receiverId: receiver.userId,
+                      isImage: true)
+                  .then((value) {
+                if (value) {
+                  Provider.of<ChatProvider>(context, listen: false).addMessage(
+                      MessageModel(
+                          message: imageId,
+                          sender: currentUserId,
+                          receiver: receiver.userId,
+                          timestamp: DateTime.now(),
+                          isSeenByRecevier: false,
+                          isImage: true),
+                      currentUserId,
+                      [
+                        UserDataModel(email: "", userId: currentUserId),
+                        receiver
+                      ]);
+                }
+              });
+            }
+          });
+        }
+      });
+    } else {
+      if (kDebugMode) {
+        print("File piclk  cancelled by user");
+      }
+    }
   }
 
   // to send simple text message
@@ -277,7 +340,11 @@ class _ChatViewState extends State<ChatView> {
                             hintText: "Type a message ..."),
                       ),
                     ),
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.image)),
+                    IconButton(
+                        onPressed: () {
+                          _openFilePicker(receiver);
+                        },
+                        icon: const Icon(Icons.image)),
                     IconButton(
                       onPressed: () {
                         _sendMessage(receiver: receiver);

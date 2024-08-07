@@ -38,10 +38,12 @@ class _ChatMessageState extends State<ChatMessage> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: CachedNetworkImage(
-                            imageUrl: "https://picsum.photos/200"),
+                          imageUrl: "https://cloud.appwrite.io/v1/storage/buckets/668d0d21002933fdfbd4/files/${widget.msg.message}/view?project=6680f2b1003440efdcfe&mode=admin",
+                          height: 200,
+                          width: 200,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                      height: 200,
-                      width: 200,
                     ),
                     Row(
                       mainAxisSize: MainAxisSize.min,
