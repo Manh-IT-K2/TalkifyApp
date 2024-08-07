@@ -440,3 +440,20 @@ Future updateIsSeen({required List<String> chatsIds}) async {
     }
   }
 }
+
+// to update the online status
+Future updateOnlineStatus({required bool status, required String userId}) async {
+  try {
+    await databases.updateDocument(databaseId: db, collectionId: userCollection, documentId: userId,
+    data: {
+      "isOnline": status
+    });
+    if (kDebugMode) {
+      print("Update user online status");
+    }
+  } catch (e) {
+    if (kDebugMode) {
+      print("Unable to update online status : $e");
+    }
+  }
+}

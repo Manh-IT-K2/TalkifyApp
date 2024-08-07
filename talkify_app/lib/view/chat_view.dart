@@ -94,7 +94,16 @@ class _ChatViewState extends State<ChatView> {
         ModalRoute.of(context)!.settings.arguments as UserDataModel;
     return Consumer<ChatProvider>(
       builder: (context, value, child) {
+        //
         final userAndOtherChats = value.getAllChats[receiver.userId] ?? [];
+
+        //
+        bool? otherUserOnline = userAndOtherChats.isNotEmpty
+            ? userAndOtherChats[0].users[0].userId == receiver.userId
+                ? userAndOtherChats[0].users[0].isOnline
+                : userAndOtherChats[0].users[1].isOnline
+            : false;
+        //
         List<String> receiverMsgList = [];
         for (var chat in userAndOtherChats) {
           if (chat.message.isSeenByRecevier == false) {
@@ -133,7 +142,7 @@ class _ChatViewState extends State<ChatView> {
                       ),
                     ),
                     Text(
-                      userAndOtherChats == true ? "Online" : "Offline",
+                      otherUserOnline == true ? "Online" : "Offline",
                       style: const TextStyle(
                         fontSize: 12,
                       ),
@@ -194,15 +203,22 @@ class _ChatViewState extends State<ChatView> {
                                                       actions: [
                                                         TextButton(
                                                           onPressed: () {
-                                                            Navigator.pop(context);
+                                                            Navigator.pop(
+                                                                context);
                                                           },
-                                                          child:
-                                                              const Text("Canel"),
+                                                          child: const Text(
+                                                              "Canel"),
                                                         ),
                                                         TextButton(
                                                           onPressed: () {
-                                                            editChat(chatId: msg.messageId!, message: editMessageController.text);
-                                                            Navigator.pop(context);
+                                                            editChat(
+                                                                chatId: msg
+                                                                    .messageId!,
+                                                                message:
+                                                                    editMessageController
+                                                                        .text);
+                                                            Navigator.pop(
+                                                                context);
                                                           },
                                                           child:
                                                               const Text("Ok"),

@@ -24,6 +24,7 @@ class _HomeViewState extends State<HomeView> {
     currentUserId =
         Provider.of<UserDataProvider>(context, listen: false).getUserId;
     Provider.of<ChatProvider>(context, listen: false).loadChats(currentUserId);
+    updateOnlineStatus(status: true, userId: currentUserId);
     subcscribeToRealtime(userId: currentUserId);
     super.initState();
   }
@@ -104,19 +105,23 @@ class _HomeViewState extends State<HomeView> {
                               : CachedNetworkImageProvider(
                                   "https://cloud.appwrite.io/v1/storage/buckets/668d0d21002933fdfbd4/files/${otherUser.profilePic}/view?project=6680f2b1003440efdcfe&mode=admin"),
                         ),
-                        const Positioned(
+                        Positioned(
                           right: 0,
                           bottom: 0,
                           child: CircleAvatar(
                             radius: 6,
-                            backgroundColor: Colors.green,
+                            backgroundColor: otherUser.isOnline == true
+                                ? Colors.green
+                                : Colors.grey.shade600,
                           ),
                         )
                       ],
                     ),
                     title: Text(otherUser.name!),
                     subtitle: Text(
-                        "${chatData[totalChat - 1].message.sender == currentUserId ? "You: " : ""}${chatData[totalChat - 1].message.isImage == true ? "Sent an image" : chatData[totalChat - 1].message.message}", overflow: TextOverflow.ellipsis,),
+                      "${chatData[totalChat - 1].message.sender == currentUserId ? "You: " : ""}${chatData[totalChat - 1].message.isImage == true ? "Sent an image" : chatData[totalChat - 1].message.message}",
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     trailing: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
