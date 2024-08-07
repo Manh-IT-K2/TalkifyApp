@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:talkify_app/controller/appwrite_controller.dart';
 import 'package:talkify_app/controller/local_saved_data.dart';
+import 'package:talkify_app/provider/chat_provider.dart';
 import 'package:talkify_app/provider/user_data_provider.dart';
 
 class ProfileView extends StatefulWidget {
@@ -40,6 +41,8 @@ class _ProfileViewState extends State<ProfileView> {
             ListTile(
               onTap: () async {
                 await LocalSavedData.clearAllData();
+                Provider.of<UserDataProvider>(context,listen: false).clearAllProfile();
+                Provider.of<ChatProvider>(context,listen: false).clearChats();
                 await logoutUser();
                 Navigator.pushNamedAndRemoveUntil(
                     context, "/login", (route) => false);

@@ -156,6 +156,10 @@ Future<UserDataModel?> getUserDetail({required String userId}) async {
     if (kDebugMode) {
       print(response.data);
     }
+    Provider.of<UserDataProvider>(navigatorKey.currentContext!, listen: false)
+        .setUserName(response.data["name"]?? "");
+    Provider.of<UserDataProvider>(navigatorKey.currentContext!, listen: false)
+        .setUserProfilePic(response.data["profile_pic"]?? "");
     return UserDataModel.toMap(response.data);
   } catch (e) {
     if (kDebugMode) {

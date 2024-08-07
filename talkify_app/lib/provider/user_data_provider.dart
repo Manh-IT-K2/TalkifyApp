@@ -68,4 +68,14 @@ class UserDataProvider extends ChangeNotifier {
     _userDeviceToken = token;
     notifyListeners();
   }
+
+  // clear add values
+  void clearAllProfile(){
+  _userId = "";
+  _userName = "";
+  _userProfilePic = "";
+  _userEmail = "";
+  _userDeviceToken = "";
+  notifyListeners();
+  }
 }

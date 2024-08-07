@@ -70,4 +70,10 @@ class ChatProvider extends ChangeNotifier {
       }
     }
   }
+
+  // clear all chats
+  void clearChats(){
+    _chats = {};
+    notifyListeners();
+  }
 }
