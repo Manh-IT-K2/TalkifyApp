@@ -33,7 +33,7 @@ class _LoginViewState extends State<LoginView> {
               .setUserEmail(emailController.text);
 
           Navigator.pushNamedAndRemoveUntil(
-              context, "/updateProfile", (route) => false,
+              context, "/update", (route) => false,
               arguments: {"title": "add"});
         } else {
           ScaffoldMessenger.of(context).showSnackBar(

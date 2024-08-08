@@ -110,6 +110,10 @@ class _ChatViewState extends State<ChatView> {
                         UserDataModel(email: "", userId: currentUserId),
                         receiver
                       ]);
+                  sendNotificationToOtherUser(
+                      notificationTitle: "$currentUserName sent you an image",
+                      notificationBody: "check it our.",
+                      deviceToken: receiver.deviceToken!);
                 }
               });
             }
@@ -143,7 +147,10 @@ class _ChatViewState extends State<ChatView> {
                     isSeenByRecevier: false),
                 currentUserId,
                 [UserDataModel(email: "", userId: currentUserId), receiver]);
-
+            sendNotificationToOtherUser(
+                notificationTitle: "$currentUserName sent you a message",
+                notificationBody: messageController.text,
+                deviceToken: receiver.deviceToken!);
             messageController.clear();
           }
         });

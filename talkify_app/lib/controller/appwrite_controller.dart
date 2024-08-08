@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:flutter/foundation.dart';
@@ -8,6 +10,7 @@ import 'package:talkify_app/model/message_model.dart';
 import 'package:talkify_app/model/user_data_model.dart';
 import 'package:talkify_app/provider/chat_provider.dart';
 import 'package:talkify_app/provider/user_data_provider.dart';
+import 'package:http/http.dart' as http;
 
 Client client = Client()
     .setEndpoint('https://cloud.appwrite.io/v1')
@@ -443,12 +446,14 @@ Future updateIsSeen({required List<String> chatsIds}) async {
 }
 
 // to update the online status
-Future updateOnlineStatus({required bool status, required String userId}) async {
+Future updateOnlineStatus(
+    {required bool status, required String userId}) async {
   try {
-    await databases.updateDocument(databaseId: db, collectionId: userCollection, documentId: userId,
-    data: {
-      "isOnline": status
-    });
+    await databases.updateDocument(
+        databaseId: db,
+        collectionId: userCollection,
+        documentId: userId,
+        data: {"isOnline": status});
     if (kDebugMode) {
       print("Update user online status");
     }
@@ -462,10 +467,11 @@ Future updateOnlineStatus({required bool status, required String userId}) async 
 // to save users device token to user collection
 Future saveUserDeviceToken(String token, String userId) async {
   try {
-    await databases.updateDocument(databaseId: db, collectionId: userCollection, documentId: userId,
-    data: {
-      "device_token" : token
-    });
+    await databases.updateDocument(
+        databaseId: db,
+        collectionId: userCollection,
+        documentId: userId,
+        data: {"device_token": token});
     if (kDebugMode) {
       print("Device token saved to DB");
     }
@@ -475,5 +481,33 @@ Future saveUserDeviceToken(String token, String userId) async {
       print("Cannot save device token : $e");
     }
     return false;
+  }
+}
+
+// to send notification to other user
+Future sendNotificationToOtherUser({
+  required String notificationTitle,
+  required String notificationBody,
+  required String deviceToken,
+}) async {
+  try {
+    final Map<String, dynamic> body = {
+      "deviceToken": deviceToken,
+      "message": {"title": notificationTitle, "body": notificationBody},
+      "data": {"greet": "welcome"}
+    };
+    final response = await http.post(
+        Uri.parse("https://66b4a166cf18fb7c7a0e.appwrite.global/"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(body));
+    if (response.statusCode == 200) {
+      if (kDebugMode) {
+        print("Notification send to other user");
+      }
+    }
+  } catch (e) {
+    if (kDebugMode) {
+      print("Notification cannot be sent");
+    }
   }
 }

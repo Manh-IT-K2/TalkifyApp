@@ -24,7 +24,7 @@ class _ProfileViewState extends State<ProfileView> {
         body: Column(
           children: [
             ListTile(
-              onTap: () => Navigator.pushNamed(context, "/updateProfile", arguments: {"title":"edit"}),
+              onTap: () => Navigator.pushNamed(context, "/update", arguments: {"title":"edit"}),
               leading: CircleAvatar(
                 backgroundImage: value.getUserProfilePic != null ||
                         value.getUserProfilePic != ""
