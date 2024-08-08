@@ -24,13 +24,13 @@ class _HomeViewState extends State<HomeView> {
     currentUserId =
         Provider.of<UserDataProvider>(context, listen: false).getUserId;
     Provider.of<ChatProvider>(context, listen: false).loadChats(currentUserId);
-    updateOnlineStatus(status: true, userId: currentUserId);
     subcscribeToRealtime(userId: currentUserId);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    updateOnlineStatus(status: true, userId: currentUserId);
     return Scaffold(
       backgroundColor: kBackgroundColor,
       appBar: AppBar(

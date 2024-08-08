@@ -352,7 +352,8 @@ Future<Map<String, List<ChatDataModel>>?> currentUserChats(
         .listDocuments(databaseId: db, collectionId: chatCollection, queries: [
       Query.or(
           [Query.equal("senderId", userId), Query.equal("receiverId", userId)]),
-      Query.orderDesc("timestamp")
+      Query.orderDesc("timestamp"),
+      Query.limit(2000)
     ]);
     final DocumentList chatDocuments = results;
     if (kDebugMode) {

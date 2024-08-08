@@ -40,10 +40,10 @@ class _ProfileViewState extends State<ProfileView> {
             const Divider(),
             ListTile(
               onTap: () async {
+                updateOnlineStatus(status: false, userId: Provider.of<UserDataProvider>(context, listen: false).getUserId);
                 await LocalSavedData.clearAllData();
                 Provider.of<UserDataProvider>(context,listen: false).clearAllProfile();
                 Provider.of<ChatProvider>(context,listen: false).clearChats();
-                updateOnlineStatus(status: false, userId: Provider.of<UserDataProvider>(context, listen: false).getUserId);
                 await logoutUser();
                 Navigator.pushNamedAndRemoveUntil(
                     context, "/login", (route) => false);

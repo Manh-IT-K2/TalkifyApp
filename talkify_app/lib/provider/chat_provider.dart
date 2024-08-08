@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:talkify_app/controller/appwrite_controller.dart';
 import 'package:talkify_app/model/chat_data_model.dart';
@@ -9,35 +11,43 @@ class ChatProvider extends ChangeNotifier {
 
   // get all users chats
   Map<String, List<ChatDataModel>> get getAllChats => _chats;
-
+  Timer? _debounce;
   // to load all current user chats
   void loadChats(String currentUser) async {
-    Map<String, List<ChatDataModel>>? loadedChats = await currentUserChats(currentUser);
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(Duration(seconds: 1), () async {
+      Map<String, List<ChatDataModel>>? loadedChats =
+          await currentUserChats(currentUser);
 
-    if(loadedChats != null){
-      _chats = loadedChats;
-      _chats.forEach((key,value){
-        value.sort((a,b) => a.message.timestamp.compareTo(b.message.timestamp));
-      });
-      notifyListeners();
-    }
+      if (loadedChats != null) {
+        _chats = loadedChats;
+        _chats.forEach((key, value) {
+          value.sort(
+              (a, b) => a.message.timestamp.compareTo(b.message.timestamp));
+        });
+        notifyListeners();
+      }
+    });
   }
 
-  // add the chat message when user send a new message to someone alse 
-  void addMessage(MessageModel message, String currentUser, List<UserDataModel> users){
-    if(message.sender == currentUser){
-      if(_chats[message.receiver] == null){
+  // add the chat message when user send a new message to someone alse
+  void addMessage(
+      MessageModel message, String currentUser, List<UserDataModel> users) {
+    if (message.sender == currentUser) {
+      if (_chats[message.receiver] == null) {
         _chats[message.receiver] = [];
       }
 
-      _chats[message.receiver]!.add(ChatDataModel(message: message, users: users));
+      _chats[message.receiver]!
+          .add(ChatDataModel(message: message, users: users));
     } else {
       // the current user is receiver
-      if(_chats[message.sender] == null){
+      if (_chats[message.sender] == null) {
         _chats[message.sender] = [];
       }
 
-      _chats[message.receiver]!.add(ChatDataModel(message: message, users: users));
+      _chats[message.receiver]!
+          .add(ChatDataModel(message: message, users: users));
     }
     notifyListeners();
   }
@@ -45,20 +55,22 @@ class ChatProvider extends ChangeNotifier {
   // delete message from the chats data
   void deleteMessage(MessageModel message, String currentUser) async {
     try {
-      // user is delete the message 
+      // user is delete the message
       if (message.sender == currentUser) {
-          _chats[message.receiver]!.removeWhere((element) => element.message == message);
+        _chats[message.receiver]!
+            .removeWhere((element) => element.message == message);
 
-          if(message.isImage == true){
-            deleteImageFromBucket(oldImageId: message.message);
-            if (kDebugMode) {
-              print("Image delete from bucket");
-            }
+        if (message.isImage == true) {
+          deleteImageFromBucket(oldImageId: message.message);
+          if (kDebugMode) {
+            print("Image delete from bucket");
           }
-          deleteCurrentUserChat(chatId: message.messageId!);
+        }
+        deleteCurrentUserChat(chatId: message.messageId!);
       } else {
         // current user is receiver
-        _chats[message.sender]!.removeWhere((element) => element.message == message);
+        _chats[message.sender]!
+            .removeWhere((element) => element.message == message);
         if (kDebugMode) {
           print("Message deleted");
         }
@@ -72,7 +84,7 @@ class ChatProvider extends ChangeNotifier {
   }
 
   // clear all chats
-  void clearChats(){
+  void clearChats() {
     _chats = {};
     notifyListeners();
   }

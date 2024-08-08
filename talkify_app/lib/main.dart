@@ -1,8 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:talkify_app/controller/appwrite_controller.dart';
 import 'package:talkify_app/controller/local_saved_data.dart';
+import 'package:talkify_app/firebase_options.dart';
 import 'package:talkify_app/provider/chat_provider.dart';
 import 'package:talkify_app/provider/user_data_provider.dart';
 import 'package:talkify_app/view/chat_view.dart';
@@ -42,7 +44,7 @@ class LifecycleEventHandler extends WidgetsBindingObserver {
           print("App paused");
         }
         break;
-       case AppLifecycleState.detached:
+      case AppLifecycleState.detached:
         updateOnlineStatus(status: false, userId: currentUserId);
         if (kDebugMode) {
           print("App detached");
@@ -61,8 +63,10 @@ class LifecycleEventHandler extends WidgetsBindingObserver {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
- WidgetsBinding.instance.addObserver(LifecycleEventHandler());
- 
+  WidgetsBinding.instance.addObserver(LifecycleEventHandler());
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await LocalSavedData.init();
   runApp(const MyApp());
 }
@@ -133,7 +137,7 @@ class _CheckUserSessionState extends State<CheckUserSession> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: CircularProgressIndicator(),
       ),
