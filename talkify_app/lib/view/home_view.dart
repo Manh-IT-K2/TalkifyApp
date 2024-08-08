@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:talkify_app/constant/color.dart';
 import 'package:talkify_app/constant/fomate_date.dart';
 import 'package:talkify_app/controller/appwrite_controller.dart';
+import 'package:talkify_app/controller/fcm_controller.dart';
 import 'package:talkify_app/model/chat_data_model.dart';
 import 'package:talkify_app/model/user_data_model.dart';
 import 'package:talkify_app/provider/chat_provider.dart';
@@ -24,6 +25,7 @@ class _HomeViewState extends State<HomeView> {
     currentUserId =
         Provider.of<UserDataProvider>(context, listen: false).getUserId;
     Provider.of<ChatProvider>(context, listen: false).loadChats(currentUserId);
+    PushNotifications.getDeviceToken();
     subcscribeToRealtime(userId: currentUserId);
     super.initState();
   }
@@ -49,13 +51,13 @@ class _HomeViewState extends State<HomeView> {
             child: Consumer<UserDataProvider>(
               builder: (context, value, child) {
                 return CircleAvatar(
-                  backgroundImage: value.getUserProfilePic != null ||
-                          value.getUserProfilePic != ""
-                      ? CachedNetworkImageProvider(
-                          "https://cloud.appwrite.io/v1/storage/buckets/668d0d21002933fdfbd4/files/${value.getUserProfilePic}/view?project=6680f2b1003440efdcfe&mode=admin")
-                      : const Image(
+                  backgroundImage:
+                          value.getUserProfilePic == ""
+                      ? const Image(
                           image: AssetImage("assets/image/user.png"),
-                        ).image,
+                        ).image
+                      : CachedNetworkImageProvider(
+                          "https://cloud.appwrite.io/v1/storage/buckets/668d0d21002933fdfbd4/files/${value.getUserProfilePic}/view?project=6680f2b1003440efdcfe&mode=admin"),
                 );
               },
             ),

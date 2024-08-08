@@ -169,8 +169,10 @@ class _ChatViewState extends State<ChatView> {
         //
         List<String> receiverMsgList = [];
         for (var chat in userAndOtherChats) {
-          if (chat.message.isSeenByRecevier == false) {
-            receiverMsgList.add(chat.message.messageId!);
+          if (chat.message.receiver == currentUserId) {
+            if (chat.message.isSeenByRecevier == false) {
+              receiverMsgList.add(chat.message.messageId!);
+            }
           }
         }
         updateIsSeen(chatsIds: receiverMsgList);

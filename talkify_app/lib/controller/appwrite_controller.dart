@@ -458,3 +458,22 @@ Future updateOnlineStatus({required bool status, required String userId}) async 
     }
   }
 }
+
+// to save users device token to user collection
+Future saveUserDeviceToken(String token, String userId) async {
+  try {
+    await databases.updateDocument(databaseId: db, collectionId: userCollection, documentId: userId,
+    data: {
+      "device_token" : token
+    });
+    if (kDebugMode) {
+      print("Device token saved to DB");
+    }
+    return true;
+  } catch (e) {
+    if (kDebugMode) {
+      print("Cannot save device token : $e");
+    }
+    return false;
+  }
+}
