@@ -52,7 +52,11 @@ TalkifyApp offers essential features such as email login with OTP verification, 
    ## Http
       - http: ^1.1.0
 ```
-## [Project Demo Link]()
+## Project Demo
+
+   Youtobe: https://youtu.be/ZYVD3bDzIbo
+
+   
 ## Application interface:
 
 | Login | Otp | Home | Chat |
