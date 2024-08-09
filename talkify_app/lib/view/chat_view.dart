@@ -353,12 +353,12 @@ class _ChatViewState extends State<ChatView> {
                         onPressed: () {
                           _openFilePicker(receiver);
                         },
-                        icon: const Icon(Icons.image)),
+                        icon: const Icon(Icons.image, color: Color.fromARGB(255, 168, 99, 175),)),
                     IconButton(
                       onPressed: () {
                         _sendMessage(receiver: receiver);
                       },
-                      icon: const Icon(Icons.send),
+                      icon: const Icon(Icons.send, color: Colors.blue,),
                     ),
                   ],
                 ),
