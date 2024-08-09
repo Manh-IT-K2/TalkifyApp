@@ -26,7 +26,7 @@ class _ProfileViewState extends State<ProfileView> {
             ListTile(
               onTap: () => Navigator.pushNamed(context, "/update", arguments: {"title":"edit"}),
               leading: CircleAvatar(
-                backgroundImage: value.getUserProfilePic != null ||
+                backgroundImage:
                         value.getUserProfilePic != ""
                     ? CachedNetworkImageProvider("https://cloud.appwrite.io/v1/storage/buckets/668d0d21002933fdfbd4/files/${value.getUserProfilePic}/view?project=6680f2b1003440efdcfe&mode=admin")
                     : const Image(

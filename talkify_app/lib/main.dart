@@ -187,7 +187,7 @@ class _CheckUserSessionsState extends State<CheckUserSessions> {
         print("username :$userName");
       }
       if (value) {
-        if (userName != null && userName != "") {
+        if (userName != "") {
           Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
         } else {
           Navigator.pushNamedAndRemoveUntil(

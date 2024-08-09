@@ -336,7 +336,7 @@ Future createNewChat(
           "users": [senderId, receiverId]
         });
     if (kDebugMode) {
-      print("Message send");
+      print("Message send : $msg",);
     }
     return true;
   } catch (e) {

@@ -128,8 +128,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                                     File(_filePickerResult!.files.first.path!),
                                   ),
                                 ).image
-                              : value.getUserProfilePic != "" &&
-                                      value.getUserProfilePic != null
+                              : value.getUserProfilePic != ""
                                   ? CachedNetworkImageProvider(
                                       "https://cloud.appwrite.io/v1/storage/buckets/668d0d21002933fdfbd4/files/${value.getUserProfilePic}/view?project=6680f2b1003440efdcfe&mode=admin")
                                   : const Image(
