@@ -333,7 +333,7 @@ class _ChatViewState extends State<ChatView> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.all(6),
+                margin: const EdgeInsets.fromLTRB(12, 6, 12, 22),
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: kSecondaryColor,

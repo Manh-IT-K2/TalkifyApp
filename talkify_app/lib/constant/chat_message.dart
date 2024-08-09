@@ -139,14 +139,14 @@ class _ChatMessageState extends State<ChatMessage> {
                         widget.msg.sender == widget.currentUser
                             ? widget.msg.isSeenByRecevier
                                 ? const Icon(
-                                    Icons.check_circle_outline,
+                                    Icons.check_circle_rounded,
                                     size: 16,
                                     color: kPrimaryColor,
                                   )
                                 : const Icon(
                                     Icons.check_circle_outline,
                                     size: 16,
-                                    color: Colors.grey,
+                                    color: kPrimaryColor,
                                   )
                             : const SizedBox(),
                       ],
