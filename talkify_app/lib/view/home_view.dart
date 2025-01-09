@@ -1,3 +1,4 @@
+import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +20,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   late String currentUserId = "";
-
+  late NotchBottomBarController _notchBottomBarController;
   @override
   void initState() {
     currentUserId =
@@ -27,6 +28,8 @@ class _HomeViewState extends State<HomeView> {
     Provider.of<ChatProvider>(context, listen: false).loadChats(currentUserId);
     PushNotifications.getDeviceToken();
     subcscribeToRealtime(userId: currentUserId);
+    // Initialize the NotchBottomBarController
+    _notchBottomBarController = NotchBottomBarController(index: 0);
     super.initState();
   }
 
@@ -40,7 +43,7 @@ class _HomeViewState extends State<HomeView> {
         elevation: 0,
         backgroundColor: kBackgroundColor,
         title: const Text(
-          "Chats",
+          "Chatting room",
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -51,8 +54,7 @@ class _HomeViewState extends State<HomeView> {
             child: Consumer<UserDataProvider>(
               builder: (context, value, child) {
                 return CircleAvatar(
-                  backgroundImage:
-                          value.getUserProfilePic == ""
+                  backgroundImage: value.getUserProfilePic == ""
                       ? const Image(
                           image: AssetImage("assets/image/user.png"),
                         ).image
@@ -62,6 +64,9 @@ class _HomeViewState extends State<HomeView> {
               },
             ),
           ),
+          const SizedBox(
+            width: 20.0,
+          )
         ],
       ),
       body: Consumer<ChatProvider>(
@@ -157,6 +162,60 @@ class _HomeViewState extends State<HomeView> {
           Navigator.pushNamed(context, "/search");
         },
         child: const Icon(Icons.add),
+      ),
+      bottomNavigationBar: AnimatedNotchBottomBar(
+        bottomBarItems: const [
+          BottomBarItem(
+            inActiveItem: Icon(
+              Icons.message_outlined,
+              color: Colors.black,
+            ),
+            activeItem: Icon(
+              Icons.message_outlined,
+              color: kPrimaryColor,
+            ),
+            itemLabel: 'Message',
+          ),
+          BottomBarItem(
+            inActiveItem: Icon(
+              Icons.auto_awesome_mosaic_outlined,
+              color: Colors.black,
+            ),
+            activeItem: Icon(
+              Icons.auto_awesome_mosaic_outlined,
+              color: kPrimaryColor,
+            ),
+            itemLabel: 'Feed',
+          ),
+          BottomBarItem(
+              inActiveItem: Icon(
+                Icons.add,
+                color: Colors.black,
+              ),
+              activeItem: Icon(
+                Icons.add,
+                color: kPrimaryColor,
+              ),
+              itemLabel: "Add"),
+          BottomBarItem(
+            inActiveItem: Icon(
+              Icons.account_circle_outlined,
+              color: Colors.black,
+            ),
+            activeItem: Icon(
+              Icons.account_circle_outlined,
+              color: kPrimaryColor,
+            ),
+            itemLabel: "Account",
+          ),
+        ],
+        notchBottomBarController: _notchBottomBarController,
+        onTap: (int value) {
+          _notchBottomBarController.index = value; // Update the controller
+          setState(() {}); // Rebuild UI
+        },
+        kIconSize: 20.0,
+        kBottomRadius: 5.0,
       ),
     );
   }

@@ -12,6 +12,7 @@ import 'package:talkify_app/firebase_options.dart';
 import 'package:talkify_app/provider/chat_provider.dart';
 import 'package:talkify_app/provider/user_data_provider.dart';
 import 'package:talkify_app/view/chat_view.dart';
+import 'package:talkify_app/view/feed_view.dart';
 import 'package:talkify_app/view/home_view.dart';
 import 'package:talkify_app/view/login_view.dart';
 import 'package:talkify_app/view/profile_view.dart';
@@ -159,7 +160,8 @@ class MyApp extends StatelessWidget {
           "/chat": (context) => const ChatView(),
           "/profile": (context) => const ProfileView(),
           "/update": (context) => const UpdateProfileView(),
-          "/search": (context) => const SearchView()
+          "/search": (context) => const SearchView(),
+          "/feed": (context) => const FeedView(),
         },
       ),
     );
