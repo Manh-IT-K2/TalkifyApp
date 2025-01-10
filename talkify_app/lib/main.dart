@@ -15,6 +15,7 @@ import 'package:talkify_app/view/chat_view.dart';
 import 'package:talkify_app/view/feed_view.dart';
 import 'package:talkify_app/view/home_view.dart';
 import 'package:talkify_app/view/login_view.dart';
+import 'package:talkify_app/view/message_view.dart';
 import 'package:talkify_app/view/profile_view.dart';
 import 'package:talkify_app/view/search_view.dart';
 import 'package:talkify_app/view/update_profile_view.dart';
@@ -127,7 +128,7 @@ void main() async {
     }
     Future.delayed(const Duration(seconds: 1), () {
       navigatorKey.currentState!.pushNamed(
-        "/home",
+        "/message_view",
       );
     });
   }
@@ -156,12 +157,13 @@ class MyApp extends StatelessWidget {
         routes: {
           "/": (context) => const CheckUserSessions(),
           "/login": (context) => const LoginView(),
-          "/home": (context) => const HomeView(),
+          "/home": (context) => HomeView(),
           "/chat": (context) => const ChatView(),
           "/profile": (context) => const ProfileView(),
           "/update": (context) => const UpdateProfileView(),
           "/search": (context) => const SearchView(),
           "/feed": (context) => const FeedView(),
+          "/message_view": (context) => const MessageView(),
         },
       ),
     );
