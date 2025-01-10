@@ -1,5 +1,6 @@
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:talkify_app/constant/color.dart';
 import 'package:talkify_app/view/feed_view.dart';
 import 'package:talkify_app/view/message_view.dart';
@@ -37,46 +38,54 @@ class _HomeViewState extends State<HomeView> {
       bottomNavigationBar: AnimatedNotchBottomBar(
         bottomBarItems: const [
           BottomBarItem(
-            inActiveItem: Icon(
-              Icons.message_outlined,
+            inActiveItem: HugeIcon(
+              icon: HugeIcons.strokeRoundedMessenger,
               color: Colors.black,
+              size: 24.0,
             ),
-            activeItem: Icon(
-              Icons.message_outlined,
+            activeItem: HugeIcon(
+              icon: HugeIcons.strokeRoundedMessenger,
               color: kPrimaryColor,
+              size: 24.0,
             ),
             itemLabel: 'Message',
           ),
           BottomBarItem(
-            inActiveItem: Icon(
-              Icons.auto_awesome_mosaic_outlined,
+            inActiveItem: HugeIcon(
+              icon: HugeIcons.strokeRoundedDashboardSquare03,
               color: Colors.black,
+              size: 24.0,
             ),
-            activeItem: Icon(
-              Icons.auto_awesome_mosaic_outlined,
+            activeItem: HugeIcon(
+              icon: HugeIcons.strokeRoundedDashboardSquare03,
               color: kPrimaryColor,
+              size: 24.0,
             ),
             itemLabel: 'Feed',
           ),
           BottomBarItem(
-            inActiveItem: Icon(
-              Icons.add,
+            inActiveItem: HugeIcon(
+              icon: HugeIcons.strokeRoundedAdd01,
               color: Colors.black,
+              size: 24.0,
             ),
-            activeItem: Icon(
-              Icons.add,
+            activeItem: HugeIcon(
+              icon: HugeIcons.strokeRoundedAdd01,
               color: kPrimaryColor,
+              size: 24.0,
             ),
             itemLabel: "Add",
           ),
           BottomBarItem(
-            inActiveItem: Icon(
-              Icons.account_circle_outlined,
+            inActiveItem: HugeIcon(
+              icon: HugeIcons.strokeRoundedUser,
               color: Colors.black,
+              size: 24.0,
             ),
-            activeItem: Icon(
-              Icons.account_circle_outlined,
+            activeItem: HugeIcon(
+              icon: HugeIcons.strokeRoundedUser,
               color: kPrimaryColor,
+              size: 24.0,
             ),
             itemLabel: "Account",
           ),
