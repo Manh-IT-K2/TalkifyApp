@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:talkify_app/constant/color.dart';
 import 'package:talkify_app/constant/fomate_date.dart';
@@ -33,15 +34,22 @@ class _ChatMessageState extends State<ChatMessage> {
                       ? CrossAxisAlignment.end
                       : CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      margin: const EdgeInsets.all(4),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: CachedNetworkImage(
-                          imageUrl: "https://cloud.appwrite.io/v1/storage/buckets/668d0d21002933fdfbd4/files/${widget.msg.message}/view?project=6680f2b1003440efdcfe&mode=admin",
-                          height: 200,
-                          width: 200,
-                          fit: BoxFit.cover,
+                    DottedBorder(
+                      dashPattern: const [4, 4],
+                      strokeWidth: 1,
+                      borderType: BorderType.RRect,
+                      radius: const Radius.circular(10),
+                      child: Container(
+                        margin: const EdgeInsets.all(4),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                "https://cloud.appwrite.io/v1/storage/buckets/668d0d21002933fdfbd4/files/${widget.msg.message}/view?project=6680f2b1003440efdcfe&mode=admin",
+                            height: 200,
+                            width: 200,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
@@ -63,7 +71,6 @@ class _ChatMessageState extends State<ChatMessage> {
                                     Icons.check_circle_rounded,
                                     size: 16,
                                     color: kPrimaryColor,
-                                
                                   )
                                 : const Icon(
                                     Icons.check_circle_outline,
@@ -99,19 +106,19 @@ class _ChatMessageState extends State<ChatMessage> {
                               maxWidth:
                                   MediaQuery.of(context).size.width * 0.75),
                           decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 1),
                             color: widget.msg.sender == widget.currentUser
                                 ? kPrimaryColor
                                 : kSecondaryColor,
                             borderRadius: BorderRadius.only(
-                              bottomLeft:
-                                  widget.msg.sender == widget.currentUser
-                                      ? const Radius.circular(20)
-                                      : const Radius.circular(2),
+                              bottomLeft: const Radius.circular(20),
                               bottomRight:
                                   widget.msg.sender == widget.currentUser
                                       ? const Radius.circular(2)
                                       : const Radius.circular(20),
-                              topLeft: const Radius.circular(20),
+                              topLeft: widget.msg.sender == widget.currentUser
+                                  ? const Radius.circular(20)
+                                  : const Radius.circular(2),
                               topRight: const Radius.circular(20),
                             ),
                           ),

@@ -49,6 +49,8 @@ dependencies:
   animated_notch_bottom_bar: ^1.0.3
   # icon
   hugeicons: ^0.0.7
+  # border dashed
+  dotted_border: ^2.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

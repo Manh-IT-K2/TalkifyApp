@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
 import 'package:talkify_app/constant/chat_message.dart';
 import 'package:talkify_app/constant/color.dart';
@@ -192,13 +193,20 @@ class _ChatViewState extends State<ChatView> {
             elevation: 0,
             title: Row(
               children: [
-                CircleAvatar(
-                  backgroundImage: receiver.profilePic == "" ||
-                          receiver.profilePic == null
-                      ? const Image(image: AssetImage("assets/image/user.png"))
-                          .image
-                      : CachedNetworkImageProvider(
-                          "https://cloud.appwrite.io/v1/storage/buckets/668d0d21002933fdfbd4/files/${receiver.profilePic}/view?project=6680f2b1003440efdcfe&mode=admin"),
+                Container(
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      
+                      border: Border.all(color: Colors.black, width: 1),),
+                  child: CircleAvatar(
+                    backgroundImage: receiver.profilePic == "" ||
+                            receiver.profilePic == null
+                        ? const Image(
+                                image: AssetImage("assets/image/user.png"))
+                            .image
+                        : CachedNetworkImageProvider(
+                            "https://cloud.appwrite.io/v1/storage/buckets/668d0d21002933fdfbd4/files/${receiver.profilePic}/view?project=6680f2b1003440efdcfe&mode=admin"),
+                  ),
                 ),
                 const SizedBox(
                   width: 10,
@@ -336,6 +344,7 @@ class _ChatViewState extends State<ChatView> {
                 margin: const EdgeInsets.fromLTRB(12, 6, 12, 22),
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black, width: 1),
                   color: kSecondaryColor,
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -350,15 +359,24 @@ class _ChatViewState extends State<ChatView> {
                       ),
                     ),
                     IconButton(
-                        onPressed: () {
-                          _openFilePicker(receiver);
-                        },
-                        icon: const Icon(Icons.image, color: Color.fromARGB(255, 168, 99, 175),)),
+                      onPressed: () {
+                        _openFilePicker(receiver);
+                      },
+                      icon: const HugeIcon(
+                        icon: HugeIcons.strokeRoundedImage02,
+                        color: Colors.purple,
+                        size: 24.0,
+                      ),
+                    ),
                     IconButton(
                       onPressed: () {
                         _sendMessage(receiver: receiver);
                       },
-                      icon: const Icon(Icons.send, color: Colors.blue,),
+                      icon: const HugeIcon(
+                        icon: HugeIcons.strokeRoundedSent,
+                        color: Colors.blue,
+                        size: 24.0,
+                      ),
                     ),
                   ],
                 ),
