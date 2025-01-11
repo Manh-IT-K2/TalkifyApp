@@ -1,6 +1,7 @@
 import 'package:appwrite/models.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
 import 'package:talkify_app/constant/color.dart';
 import 'package:talkify_app/controller/appwrite_controller.dart';
@@ -49,6 +50,7 @@ class _SearchViewState extends State<SearchView> {
           preferredSize: const Size.fromHeight(50),
           child: Container(
             decoration: BoxDecoration(
+              border: Border.all(color: Colors.black, width: 1),
               color: kSecondaryColor,
               borderRadius: BorderRadius.circular(6),
             ),
@@ -65,7 +67,11 @@ class _SearchViewState extends State<SearchView> {
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.search),
+                  icon: const HugeIcon(
+                    icon: HugeIcons.strokeRoundedMailSearch01,
+                    color: Colors.black,
+                    size: 24.0,
+                  ),
                   onPressed: () {
                     _handleSearch();
                   },
@@ -87,10 +93,10 @@ class _SearchViewState extends State<SearchView> {
                   itemCount: searchedUsers.documents.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      onTap: (){
-                        Navigator.pushNamed(context, "/chat", 
-                        arguments: UserDataModel.toMap(searchedUsers.documents[index].data)
-                        );
+                      onTap: () {
+                        Navigator.pushNamed(context, "/chat",
+                            arguments: UserDataModel.toMap(
+                                searchedUsers.documents[index].data));
                       },
                       leading: CircleAvatar(
                         backgroundImage: searchedUsers

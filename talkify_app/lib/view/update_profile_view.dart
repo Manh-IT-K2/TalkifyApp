@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
 import 'package:talkify_app/constant/color.dart';
 import 'package:talkify_app/controller/appwrite_controller.dart';
@@ -119,22 +120,29 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                     },
                     child: Stack(
                       children: [
-                        CircleAvatar(
-                          radius: 120,
-                          backgroundColor: Colors.grey.shade200,
-                          backgroundImage: _filePickerResult != null
-                              ? Image(
-                                  image: FileImage(
-                                    File(_filePickerResult!.files.first.path!),
-                                  ),
-                                ).image
-                              : value.getUserProfilePic != ""
-                                  ? CachedNetworkImageProvider(
-                                      "https://cloud.appwrite.io/v1/storage/buckets/668d0d21002933fdfbd4/files/${value.getUserProfilePic}/view?project=6680f2b1003440efdcfe&mode=admin")
-                                  : const Image(
-                                      image:
-                                          AssetImage("assets/image/user.png"),
-                                    ).image,
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.black, width: 1),
+                          ),
+                          child: CircleAvatar(
+                            radius: 120,
+                            backgroundColor: Colors.grey.shade200,
+                            backgroundImage: _filePickerResult != null
+                                ? Image(
+                                    image: FileImage(
+                                      File(
+                                          _filePickerResult!.files.first.path!),
+                                    ),
+                                  ).image
+                                : value.getUserProfilePic != ""
+                                    ? CachedNetworkImageProvider(
+                                        "https://cloud.appwrite.io/v1/storage/buckets/668d0d21002933fdfbd4/files/${value.getUserProfilePic}/view?project=6680f2b1003440efdcfe&mode=admin")
+                                    : const Image(
+                                        image:
+                                            AssetImage("assets/image/user.png"),
+                                      ).image,
+                          ),
                         ),
                         Positioned(
                           bottom: 0,
@@ -145,9 +153,10 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                               color: kPrimaryColor,
                               borderRadius: BorderRadius.circular(30),
                             ),
-                            child: const Icon(
-                              Icons.edit_rounded,
-                              color: Colors.white,
+                            child: const HugeIcon(
+                              icon: HugeIcons.strokeRoundedEditUser02,
+                              color: Colors.black,
+                              size: 24.0,
                             ),
                           ),
                         ),
@@ -159,6 +168,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                   ),
                   Container(
                     decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 1),
                         color: kSecondaryColor,
                         borderRadius: BorderRadius.circular(12)),
                     margin: const EdgeInsets.all(6),
@@ -183,6 +193,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                   ),
                   Container(
                     decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 1),
                         color: kSecondaryColor,
                         borderRadius: BorderRadius.circular(12)),
                     margin: const EdgeInsets.all(6),
@@ -208,11 +219,11 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                           if (_filePickerResult != null) {
                             await uploadProfileImage();
                           }
-
+                    
                           // save the data to database user colection
                           await updateUserDetail(imageId ?? "",
                               userId: userId!, name: _nameController.text);
-
+                    
                           // navigate the user to the home route
                           Navigator.pushNamedAndRemoveUntil(
                               context, "/home", (route) => false);
