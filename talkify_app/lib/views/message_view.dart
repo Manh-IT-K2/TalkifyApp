@@ -2,14 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
-import 'package:talkify_app/constant/color.dart';
-import 'package:talkify_app/constant/fomate_date.dart';
-import 'package:talkify_app/controller/appwrite_controller.dart';
-import 'package:talkify_app/controller/fcm_controller.dart';
-import 'package:talkify_app/model/chat_data_model.dart';
-import 'package:talkify_app/model/user_data_model.dart';
-import 'package:talkify_app/provider/chat_provider.dart';
-import 'package:talkify_app/provider/user_data_provider.dart';
+import 'package:talkify_app/constants/color.dart';
+import 'package:talkify_app/constants/fomate_date.dart';
+import 'package:talkify_app/controllers/appwrite_controller.dart';
+import 'package:talkify_app/controllers/fcm_controller.dart';
+import 'package:talkify_app/models/chat_data_model.dart';
+import 'package:talkify_app/models/user_data_model.dart';
+import 'package:talkify_app/providers/chat_provider.dart';
+import 'package:talkify_app/providers/user_data_provider.dart';
 
 class MessageView extends StatefulWidget {
   const MessageView({super.key});

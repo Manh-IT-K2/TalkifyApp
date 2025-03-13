@@ -1,11 +1,11 @@
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:talkify_app/constant/color.dart';
-import 'package:talkify_app/view/feed_view.dart';
-import 'package:talkify_app/view/message_view.dart';
-import 'package:talkify_app/view/profile_view.dart';
-import 'package:talkify_app/view/search_view.dart';
+import 'package:talkify_app/constants/color.dart';
+import 'package:talkify_app/views/feed_view.dart';
+import 'package:talkify_app/views/message_view.dart';
+import 'package:talkify_app/views/profile_view.dart';
+import 'package:talkify_app/views/search_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});

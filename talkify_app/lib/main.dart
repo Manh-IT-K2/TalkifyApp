@@ -5,20 +5,22 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:talkify_app/controller/appwrite_controller.dart';
-import 'package:talkify_app/controller/fcm_controller.dart';
-import 'package:talkify_app/controller/local_saved_data.dart';
+import 'package:talkify_app/controllers/appwrite_controller.dart';
+import 'package:talkify_app/controllers/fcm_controller.dart';
+import 'package:talkify_app/controllers/local_saved_data.dart';
 import 'package:talkify_app/firebase_options.dart';
-import 'package:talkify_app/provider/chat_provider.dart';
-import 'package:talkify_app/provider/user_data_provider.dart';
-import 'package:talkify_app/view/chat_view.dart';
-import 'package:talkify_app/view/feed_view.dart';
-import 'package:talkify_app/view/home_view.dart';
-import 'package:talkify_app/view/login_view.dart';
-import 'package:talkify_app/view/message_view.dart';
-import 'package:talkify_app/view/profile_view.dart';
-import 'package:talkify_app/view/search_view.dart';
-import 'package:talkify_app/view/update_profile_view.dart';
+import 'package:talkify_app/providers/chat_provider.dart';
+import 'package:talkify_app/providers/user_data_provider.dart';
+import 'package:talkify_app/views/chat_view.dart';
+import 'package:talkify_app/views/feed_view.dart';
+import 'package:talkify_app/views/home_view.dart';
+import 'package:talkify_app/views/login_view.dart';
+import 'package:talkify_app/views/message_view.dart';
+import 'package:talkify_app/views/profile_view.dart';
+import 'package:talkify_app/views/search_view.dart';
+import 'package:talkify_app/views/update_profile_view.dart';
+import 'package:sizer/sizer.dart';
+import 'package:sizer/sizer.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -142,30 +144,34 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => UserDataProvider()),
-        ChangeNotifierProvider(create: (context) => ChatProvider()),
-      ],
-      child: MaterialApp(
-        navigatorKey: navigatorKey,
-        title: 'Talkify App',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
-          useMaterial3: true,
-        ),
-        routes: {
-          "/": (context) => const CheckUserSessions(),
-          "/login": (context) => const LoginView(),
-          "/home": (context) => HomeView(),
-          "/chat": (context) => const ChatView(),
-          "/profile": (context) => const ProfileView(),
-          "/update": (context) => const UpdateProfileView(),
-          "/search": (context) => const SearchView(),
-          "/feed": (context) => const FeedView(),
-          "/message_view": (context) => const MessageView(),
-        },
-      ),
+    return Sizer(
+      builder: (context, orientation, screenType) {
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (context) => UserDataProvider()),
+            ChangeNotifierProvider(create: (context) => ChatProvider()),
+          ],
+          child: MaterialApp(
+            navigatorKey: navigatorKey,
+            title: 'Talkify App',
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
+              useMaterial3: true,
+            ),
+            routes: {
+              "/": (context) => const CheckUserSessions(),
+              "/login": (context) => const LoginView(),
+              "/home": (context) => const HomeView(),
+              "/chat": (context) => const ChatView(),
+              "/profile": (context) => const ProfileView(),
+              "/update": (context) => const UpdateProfileView(),
+              "/search": (context) => const SearchView(),
+              "/feed": (context) => const FeedView(),
+              "/message_view": (context) => const MessageView(),
+            },
+          ),
+        );
+      },
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:talkify_app/constant/color.dart';
+import 'package:talkify_app/constants/color.dart';
 
 class FeedView extends StatelessWidget {
   const FeedView({super.key});

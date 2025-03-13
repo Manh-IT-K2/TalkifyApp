@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class PrimaryFont {
-  
   static String fontFamily = "Josefin Sans";
 
   // type text thin
@@ -15,7 +14,7 @@ class PrimaryFont {
   }
 
   // type text light
-  static TextStyle light(double size){
+  static TextStyle light(double size) {
     return TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w300,
@@ -24,16 +23,13 @@ class PrimaryFont {
   }
 
   // type text medium
-  static TextStyle medium(double size){
+  static TextStyle medium(double size) {
     return TextStyle(
-      fontFamily: fontFamily,
-      fontWeight: FontWeight.w500,
-      fontSize: size
-    );
+        fontFamily: fontFamily, fontWeight: FontWeight.w500, fontSize: size);
   }
 
   // type text bold
-  static TextStyle bold(double size){
+  static TextStyle bold(double size) {
     return TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w700,
@@ -46,34 +42,31 @@ class PrimaryFont {
     return TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w100,
-      fontSize: 5.w,
+      fontSize: 6.w,
     );
   }
 
   // type title text light
-  static TextStyle titleLight(){
+  static TextStyle titleLight() {
     return TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w300,
-      fontSize: 5.w,
+      fontSize: 6.w,
     );
   }
 
   // type title text medium
-  static TextStyle titleMedium(){
+  static TextStyle titleMedium() {
     return TextStyle(
-      fontFamily: fontFamily,
-      fontWeight: FontWeight.w500,
-      fontSize: 5.w
-    );
+        fontFamily: fontFamily, fontWeight: FontWeight.w500, fontSize: 6.w);
   }
 
   // type title text bold
-  static TextStyle titleBold(){
+  static TextStyle titleBold() {
     return TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w700,
-      fontSize: 5.w,
+      fontSize: 6.w,
     );
   }
 
@@ -82,35 +75,31 @@ class PrimaryFont {
     return TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w100,
-      fontSize: 3.w,
+      fontSize: 4.w,
     );
   }
 
   // type subtitle text light
-  static TextStyle subTitleLight(){
+  static TextStyle subTitleLight() {
     return TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w300,
-      fontSize: 3.w,
+      fontSize: 4.w,
     );
   }
 
   // type subtitle text medium
-  static TextStyle subTitleMedium(){
+  static TextStyle subTitleMedium() {
     return TextStyle(
-      fontFamily: fontFamily,
-      fontWeight: FontWeight.w500,
-      fontSize: 3.w
-    );
+        fontFamily: fontFamily, fontWeight: FontWeight.w500, fontSize: 4.w);
   }
 
   // type subtitle text bold
-  static TextStyle subTitleBold(){
+  static TextStyle subTitleBold() {
     return TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w700,
-      fontSize: 3.w,
+      fontSize: 4.w,
     );
   }
-
 }

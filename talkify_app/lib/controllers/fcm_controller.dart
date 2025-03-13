@@ -1,8 +1,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:talkify_app/controller/appwrite_controller.dart';
-import 'package:talkify_app/controller/local_saved_data.dart';
+import 'package:talkify_app/controllers/appwrite_controller.dart';
+import 'package:talkify_app/controllers/local_saved_data.dart';
 import 'package:talkify_app/main.dart';
 
 class PushNotifications {

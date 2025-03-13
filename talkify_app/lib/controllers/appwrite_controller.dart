@@ -5,11 +5,11 @@ import 'package:appwrite/models.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:talkify_app/main.dart';
-import 'package:talkify_app/model/chat_data_model.dart';
-import 'package:talkify_app/model/message_model.dart';
-import 'package:talkify_app/model/user_data_model.dart';
-import 'package:talkify_app/provider/chat_provider.dart';
-import 'package:talkify_app/provider/user_data_provider.dart';
+import 'package:talkify_app/models/chat_data_model.dart';
+import 'package:talkify_app/models/message_model.dart';
+import 'package:talkify_app/models/user_data_model.dart';
+import 'package:talkify_app/providers/chat_provider.dart';
+import 'package:talkify_app/providers/user_data_provider.dart';
 import 'package:http/http.dart' as http;
 
 Client client = Client()

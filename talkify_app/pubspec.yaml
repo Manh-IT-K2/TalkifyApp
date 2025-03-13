@@ -51,7 +51,8 @@ dependencies:
   hugeicons: ^0.0.7
   # border dashed
   dotted_border: ^2.1.0
-  sizer: ^3.0.0
+  #
+  sizer: ^3.0.4
 
 dev_dependencies:
   flutter_test:
@@ -62,7 +63,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -97,13 +98,13 @@ flutter:
   fonts:
     - family: Josefin Sans
       fonts:
-        - asset: fonts/JosefinSans-Thin.ttf
+        - asset: assets/fonts/JosefinSans-Thin.ttf
           weight: 100
-        - asset: fonts/JosefinSans-Light.ttf
+        - asset: assets/fonts/JosefinSans-Light.ttf
           weight: 300
-        - asset: fonts/JosefinSans-Medium.ttf
+        - asset: assets/fonts/JosefinSans-Medium.ttf
           weight: 500
-        - asset: fonts/JosefinSans-Bold.ttf
+        - asset: assets/fonts/JosefinSans-Bold.ttf
           weight: 700
   #   - family: Trajan Pro
   #     fonts:

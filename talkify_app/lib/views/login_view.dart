@@ -1,8 +1,12 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:talkify_app/constant/color.dart';
-import 'package:talkify_app/controller/appwrite_controller.dart';
-import 'package:talkify_app/provider/user_data_provider.dart';
+import 'package:talkify_app/constants/color.dart';
+import 'package:talkify_app/constants/text.dart';
+import 'package:talkify_app/controllers/appwrite_controller.dart';
+import 'package:talkify_app/providers/user_data_provider.dart';
+import 'package:talkify_app/utils/theme_text.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -64,13 +68,15 @@ class _LoginViewState extends State<LoginView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Welcom to Talkify",
+                    Text(
+                      txtTitleLog,
                       style:
-                          TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                          PrimaryFont.titleBold().copyWith(color: Colors.black),
                     ),
-                    const Text(
-                      "Enter your email to continute.",
+                    Text(
+                      txtSubTitleLog,
+                      style: PrimaryFont.subTitleMedium()
+                          .copyWith(color: Colors.black),
                     ),
                     const SizedBox(
                       height: 20,
@@ -78,14 +84,14 @@ class _LoginViewState extends State<LoginView> {
                     Form(
                       key: formKey,
                       child: TextFormField(
-                        
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
-                          labelText: "Enter you email",
+                          labelText: txtFormLog,
+                          labelStyle: PrimaryFont.subTitleMedium()
+                              .copyWith(color: Colors.black),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            
                           ),
                         ),
                       ),
@@ -99,20 +105,27 @@ class _LoginViewState extends State<LoginView> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
-                            createEmailSession(
-                                    email: emailController.text)
+                            createEmailSession(email: emailController.text)
                                 .then((value) {
                               if (value != "login_error") {
                                 showDialog(
                                   context: context,
                                   builder: (context) => AlertDialog(
-                                    title: const Text("OTP Verification"),
+                                    title: Text(
+                                      txtTitleOtpLog,
+                                      style: PrimaryFont.titleBold()
+                                          .copyWith(color: Colors.black),
+                                    ),
                                     content: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        const Text("Enter 6 digit OTP"),
+                                        Text(
+                                          txtSubTitleOtpLog,
+                                          style: PrimaryFont.subTitleMedium()
+                                              .copyWith(color: Colors.black),
+                                        ),
                                         const SizedBox(
                                           height: 12,
                                         ),
@@ -128,8 +141,11 @@ class _LoginViewState extends State<LoginView> {
                                               return null;
                                             },
                                             decoration: InputDecoration(
-                                              labelText:
-                                                  "Enter the otp received",
+                                              labelText: txtFormOtpLog,
+                                              labelStyle:
+                                                  PrimaryFont.subTitleMedium()
+                                                      .copyWith(
+                                                          color: Colors.black),
                                               border: OutlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(12),
@@ -144,7 +160,11 @@ class _LoginViewState extends State<LoginView> {
                                         onPressed: () {
                                           handleOtpSubmit(value, context);
                                         },
-                                        child: const Text("Submit"),
+                                        child: Text(
+                                          txtSubmitLog,
+                                          style: PrimaryFont.subTitleMedium()
+                                              .copyWith(color: kPrimaryColor),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -159,10 +179,13 @@ class _LoginViewState extends State<LoginView> {
                             });
                           }
                         },
-                        child: Text("Send OTP"),
                         style: ElevatedButton.styleFrom(
                             backgroundColor: kPrimaryColor,
                             foregroundColor: Colors.white),
+                        child: Text(
+                          txtSendLog,
+                          style: PrimaryFont.subTitleMedium(),
+                        ),
                       ),
                     ),
                   ],

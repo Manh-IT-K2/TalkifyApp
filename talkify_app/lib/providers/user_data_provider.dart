@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:talkify_app/controller/appwrite_controller.dart';
-import 'package:talkify_app/controller/local_saved_data.dart';
-import 'package:talkify_app/model/user_data_model.dart';
+import 'package:talkify_app/controllers/appwrite_controller.dart';
+import 'package:talkify_app/controllers/local_saved_data.dart';
+import 'package:talkify_app/models/user_data_model.dart';
 
 class UserDataProvider extends ChangeNotifier {
   String _userId = "";

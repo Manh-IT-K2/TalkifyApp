@@ -1,5 +1,5 @@
-import 'package:talkify_app/model/message_model.dart';
-import 'package:talkify_app/model/user_data_model.dart';
+import 'package:talkify_app/models/message_model.dart';
+import 'package:talkify_app/models/user_data_model.dart';
 
 class ChatDataModel {
   final MessageModel message;

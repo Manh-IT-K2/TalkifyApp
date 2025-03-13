@@ -7,13 +7,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
-import 'package:talkify_app/constant/chat_message.dart';
-import 'package:talkify_app/constant/color.dart';
-import 'package:talkify_app/controller/appwrite_controller.dart';
-import 'package:talkify_app/model/message_model.dart';
-import 'package:talkify_app/model/user_data_model.dart';
-import 'package:talkify_app/provider/chat_provider.dart';
-import 'package:talkify_app/provider/user_data_provider.dart';
+import 'package:talkify_app/constants/chat_message.dart';
+import 'package:talkify_app/constants/color.dart';
+import 'package:talkify_app/controllers/appwrite_controller.dart';
+import 'package:talkify_app/models/message_model.dart';
+import 'package:talkify_app/models/user_data_model.dart';
+import 'package:talkify_app/providers/chat_provider.dart';
+import 'package:talkify_app/providers/user_data_provider.dart';
 
 class ChatView extends StatefulWidget {
   const ChatView({super.key});

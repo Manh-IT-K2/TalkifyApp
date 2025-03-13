@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:talkify_app/constant/color.dart';
-import 'package:talkify_app/constant/fomate_date.dart';
-import 'package:talkify_app/model/message_model.dart';
+import 'package:talkify_app/constants/color.dart';
+import 'package:talkify_app/constants/fomate_date.dart';
+import 'package:talkify_app/models/message_model.dart';
 
 class ChatMessage extends StatefulWidget {
   final MessageModel msg;

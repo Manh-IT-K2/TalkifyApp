@@ -7,9 +7,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
-import 'package:talkify_app/constant/color.dart';
-import 'package:talkify_app/controller/appwrite_controller.dart';
-import 'package:talkify_app/provider/user_data_provider.dart';
+import 'package:talkify_app/constants/color.dart';
+import 'package:talkify_app/controllers/appwrite_controller.dart';
+import 'package:talkify_app/providers/user_data_provider.dart';
 
 class UpdateProfileView extends StatefulWidget {
   const UpdateProfileView({super.key});
