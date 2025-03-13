@@ -15,7 +15,7 @@ class ChatProvider extends ChangeNotifier {
   // to load all current user chats
   void loadChats(String currentUser) async {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(Duration(seconds: 1), () async {
+    _debounce = Timer(const Duration(seconds: 1), () async {
       Map<String, List<ChatDataModel>>? loadedChats =
           await currentUserChats(currentUser);
 

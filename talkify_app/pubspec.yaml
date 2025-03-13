@@ -51,6 +51,7 @@ dependencies:
   hugeicons: ^0.0.7
   # border dashed
   dotted_border: ^2.1.0
+  sizer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
