@@ -35,6 +35,7 @@ class UserDataProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+  
   // set user id
   void setUserId(String id) {
     _userId = id;

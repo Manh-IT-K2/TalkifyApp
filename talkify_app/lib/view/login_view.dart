@@ -78,13 +78,14 @@ class _LoginViewState extends State<LoginView> {
                     Form(
                       key: formKey,
                       child: TextFormField(
+                        
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
-                    
                           labelText: "Enter you email",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
+                            
                           ),
                         ),
                       ),

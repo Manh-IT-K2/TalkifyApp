@@ -51,6 +51,7 @@ dependencies:
   hugeicons: ^0.0.7
   # border dashed
   dotted_border: ^2.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -79,6 +80,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/image/
+    - assets/screen_app/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -91,12 +93,17 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+  fonts:
+    - family: Josefin Sans
+      fonts:
+        - asset: fonts/JosefinSans-Thin.ttf
+          weight: 100
+        - asset: fonts/JosefinSans-Light.ttf
+          weight: 300
+        - asset: fonts/JosefinSans-Medium.ttf
+          weight: 500
+        - asset: fonts/JosefinSans-Bold.ttf
+          weight: 700
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

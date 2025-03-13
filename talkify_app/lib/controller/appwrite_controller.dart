@@ -123,7 +123,7 @@ Future<String> checkEmail({required String email}) async {
   }
 }
 
-// create  a phone session, send otp to the phone number
+// create  a email session, send otp to the email
 Future<String> createEmailSession({required String email}) async {
   try {
     final userId = await checkEmail(email: email);
