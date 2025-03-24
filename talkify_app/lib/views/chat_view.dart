@@ -9,11 +9,13 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
 import 'package:talkify_app/constants/chat_message.dart';
 import 'package:talkify_app/constants/color.dart';
+import 'package:talkify_app/constants/text.dart';
 import 'package:talkify_app/controllers/appwrite_controller.dart';
 import 'package:talkify_app/models/message_model.dart';
 import 'package:talkify_app/models/user_data_model.dart';
 import 'package:talkify_app/providers/chat_provider.dart';
 import 'package:talkify_app/providers/user_data_provider.dart';
+import 'package:talkify_app/utils/theme_text.dart';
 
 class ChatView extends StatefulWidget {
   const ChatView({super.key});
@@ -195,15 +197,15 @@ class _ChatViewState extends State<ChatView> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      
-                      border: Border.all(color: Colors.black, width: 1),),
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.black, width: 1),
+                  ),
                   child: CircleAvatar(
                     backgroundImage: receiver.profilePic == "" ||
                             receiver.profilePic == null
                         ? const Image(
-                                image: AssetImage("assets/image/user.png"))
-                            .image
+                            image: AssetImage("assets/image/user.png"),
+                          ).image
                         : CachedNetworkImageProvider(
                             "https://cloud.appwrite.io/v1/storage/buckets/668d0d21002933fdfbd4/files/${receiver.profilePic}/view?project=6680f2b1003440efdcfe&mode=admin"),
                   ),
@@ -221,12 +223,9 @@ class _ChatViewState extends State<ChatView> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Text(
-                      otherUserOnline == true ? "Online" : "Offline",
-                      style: const TextStyle(
-                        fontSize: 12,
-                      ),
-                    ),
+                    Text(otherUserOnline == true ? txtOnlineC : txtOfflineC,
+                        style: PrimaryFont.subTitleMedium()
+                            .copyWith(color: kPrimaryColor)),
                   ],
                 ),
               ],
@@ -273,8 +272,14 @@ class _ChatViewState extends State<ChatView> {
                                                 context: context,
                                                 builder: (context) =>
                                                     AlertDialog(
-                                                      title: const Text(
-                                                          "Edit this message"),
+                                                      title: Text(
+                                                        txtEditDialogC,
+                                                        style: PrimaryFont
+                                                                .subTitleMedium()
+                                                            .copyWith(
+                                                                color: Colors
+                                                                    .black),
+                                                      ),
                                                       content: TextFormField(
                                                         controller:
                                                             editMessageController,
@@ -286,8 +291,14 @@ class _ChatViewState extends State<ChatView> {
                                                             Navigator.pop(
                                                                 context);
                                                           },
-                                                          child: const Text(
-                                                              "Canel"),
+                                                          child: Text(
+                                                            txtCancelDialogC,
+                                                            style: PrimaryFont
+                                                                    .subTitleMedium()
+                                                                .copyWith(
+                                                                    color: Colors
+                                                                        .black),
+                                                          ),
                                                         ),
                                                         TextButton(
                                                           onPressed: () {
@@ -300,13 +311,23 @@ class _ChatViewState extends State<ChatView> {
                                                             Navigator.pop(
                                                                 context);
                                                           },
-                                                          child:
-                                                              const Text("Ok"),
+                                                          child: Text(
+                                                            txtOkC,
+                                                            style: PrimaryFont
+                                                                    .subTitleBold()
+                                                                .copyWith(
+                                                                    color: Colors
+                                                                        .black),
+                                                          ),
                                                         ),
                                                       ],
                                                     ));
                                           },
-                                          child: const Text("Edit"),
+                                          child: Text(
+                                            txtEditC,
+                                            style: PrimaryFont.subTitleBold()
+                                                .copyWith(color: Colors.black),
+                                          ),
                                         )
                                       : const SizedBox(),
                                   msg.sender == currentUserId
@@ -318,14 +339,22 @@ class _ChatViewState extends State<ChatView> {
                                                     msg, currentUserId);
                                             Navigator.pop(context);
                                           },
-                                          child: const Text("Delete"),
+                                          child: Text(
+                                            txtDeleteC,
+                                            style: PrimaryFont.subTitleMedium()
+                                                .copyWith(color: Colors.black),
+                                          ),
                                         )
                                       : const SizedBox(),
                                   TextButton(
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
-                                    child: const Text("Cancel"),
+                                    child: Text(
+                                      txtCancelC,
+                                      style: PrimaryFont.subTitleMedium()
+                                          .copyWith(color: Colors.black),
+                                    ),
                                   )
                                 ],
                               ),
@@ -353,9 +382,12 @@ class _ChatViewState extends State<ChatView> {
                     Expanded(
                       child: TextFormField(
                         controller: messageController,
-                        decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "Type a message ..."),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: txtFormC,
+                          hintStyle: PrimaryFont.subTitleLight()
+                              .copyWith(color: Colors.grey),
+                        ),
                       ),
                     ),
                     IconButton(

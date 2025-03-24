@@ -2,6 +2,7 @@ import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_not
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:talkify_app/constants/color.dart';
+import 'package:talkify_app/constants/text.dart';
 import 'package:talkify_app/views/feed_view.dart';
 import 'package:talkify_app/views/message_view.dart';
 import 'package:talkify_app/views/profile_view.dart';
@@ -48,7 +49,7 @@ class _HomeViewState extends State<HomeView> {
               color: kPrimaryColor,
               size: 24.0,
             ),
-            itemLabel: 'Message',
+            itemLabel: txtMessageH,
           ),
           BottomBarItem(
             inActiveItem: HugeIcon(
@@ -61,7 +62,7 @@ class _HomeViewState extends State<HomeView> {
               color: kPrimaryColor,
               size: 24.0,
             ),
-            itemLabel: 'Feed',
+            itemLabel: txtFeedH,
           ),
           BottomBarItem(
             inActiveItem: HugeIcon(
@@ -74,7 +75,7 @@ class _HomeViewState extends State<HomeView> {
               color: kPrimaryColor,
               size: 24.0,
             ),
-            itemLabel: "Add",
+            itemLabel: txtAddH,
           ),
           BottomBarItem(
             inActiveItem: HugeIcon(
@@ -87,7 +88,7 @@ class _HomeViewState extends State<HomeView> {
               color: kPrimaryColor,
               size: 24.0,
             ),
-            itemLabel: "Account",
+            itemLabel: txtAccountH,
           ),
         ],
         notchBottomBarController: _notchBottomBarController,

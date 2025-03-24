@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:talkify_app/constants/color.dart';
+import 'package:talkify_app/constants/text.dart';
+import 'package:talkify_app/utils/theme_text.dart';
 
 class FeedView extends StatelessWidget {
   const FeedView({super.key});
@@ -9,11 +11,9 @@ class FeedView extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Feed Explore",
-          style: TextStyle(
-              color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.bold),
-        ),
+        title:  Text(
+          txtTitleF,
+          style: PrimaryFont.titleBold(),),
       ),
       body: Container(
         margin: const EdgeInsets.fromLTRB(12, 0, 12, 0),
@@ -64,22 +64,16 @@ class FeedView extends StatelessWidget {
                               backgroundColor: Colors.grey[200],
                             ),
                             const SizedBox(width: 5),
-                            const Column(
+                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   "Mansahu",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold),
+                                  style: PrimaryFont.subTitleBold(),
                                 ),
                                 Text(
                                   "4 hours ago",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.normal),
+                                  style: PrimaryFont.subTitleLight(),
                                 ),
                               ],
                             ),
@@ -92,14 +86,11 @@ class FeedView extends StatelessWidget {
                         ),
                         const Divider(
                             thickness: 0.5, color: Colors.black, height: 5),
-                        const Padding(
-                          padding: EdgeInsets.fromLTRB(12, 8, 12, 0),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
                           child: Text(
                             "I sell 2 tickets to the show tonight friends there are asking...?",
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.normal,
-                            ),
+                            style: PrimaryFont.subTitleLight(),
                             maxLines: 2, // max 
                             overflow: TextOverflow.ellipsis, // ...
                           ),
