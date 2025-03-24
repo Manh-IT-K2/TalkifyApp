@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:talkify_app/constants/color.dart';
 import 'package:talkify_app/controllers/appwrite_controller.dart';
 import 'package:talkify_app/providers/user_data_provider.dart';
+import 'package:talkify_app/utils/theme_text.dart';
 
 class UpdateProfileView extends StatefulWidget {
   const UpdateProfileView({super.key});
@@ -102,7 +103,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
         return Scaffold(
           appBar: AppBar(
             title:
-                Text(datapassed["title"] == "edit" ? "Update" : "Add Details"),
+                Text(datapassed["title"] == "edit" ? "Update" : "Add Details", style: PrimaryFont.titleBold(),),
           ),
           body: SingleChildScrollView(
             child: Padding(
@@ -182,9 +183,11 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                           return null;
                         },
                         controller: _nameController,
-                        decoration: const InputDecoration(
+                         style: PrimaryFont.subTitleMedium(),
+                        decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: "Enter you name"),
+                            hintText: "Enter you name",
+                            hintStyle: PrimaryFont.subTitleMedium()),
                       ),
                     ),
                   ),
@@ -201,9 +204,12 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     child: TextFormField(
                       controller: _emailController,
+                      style: PrimaryFont.subTitleMedium(),
                       enabled: false,
-                      decoration: const InputDecoration(
-                          border: InputBorder.none, hintText: "email"),
+                      decoration: InputDecoration(
+                          border: InputBorder.none, 
+                          hintText: "email", 
+                          hintStyle: PrimaryFont.subTitleMedium(),),
                     ),
                   ),
                   const SizedBox(
@@ -231,7 +237,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                       },
                       child: Text(datapassed["title"] == "edit"
                           ? "Update"
-                          : "Continue"),
+                          : "Continue", style: PrimaryFont.subTitleMedium(),),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: kPrimaryColor,
                           foregroundColor: Colors.white),

@@ -2,10 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
+import 'package:talkify_app/constants/text.dart';
 import 'package:talkify_app/controllers/appwrite_controller.dart';
 import 'package:talkify_app/controllers/local_saved_data.dart';
 import 'package:talkify_app/providers/chat_provider.dart';
 import 'package:talkify_app/providers/user_data_provider.dart';
+import 'package:talkify_app/utils/theme_text.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -20,7 +22,7 @@ class _ProfileViewState extends State<ProfileView> {
     return Consumer<UserDataProvider>(builder: (context, value, child) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text("Profile"),
+          title: Text(txtTitleP, style: PrimaryFont.titleBold(),),
         ),
         body: Column(
           children: [
@@ -42,7 +44,8 @@ class _ProfileViewState extends State<ProfileView> {
                 ),
               ),
               title: Text(value.getUserName),
-              subtitle: Text(value.getUserEmail),
+              titleTextStyle: PrimaryFont.subTitleMedium().copyWith(color: Colors.black),
+              subtitle: Text(value.getUserEmail, style: PrimaryFont.subTitleMedium(),),
               trailing: const HugeIcon(
                 icon: HugeIcons.strokeRoundedPencilEdit02,
                 color: Colors.black,
@@ -70,16 +73,16 @@ class _ProfileViewState extends State<ProfileView> {
                 color: Colors.black,
                 size: 24.0,
               ),
-              title: const Text("Logout"),
+              title: Text(txtLogoutP, style: PrimaryFont.subTitleMedium(),),
             ),
             const Divider(),
-            const ListTile(
-              leading: HugeIcon(
+            ListTile(
+              leading: const HugeIcon(
                 icon: HugeIcons.strokeRoundedAlertCircle,
                 color: Colors.black,
                 size: 24.0,
               ),
-              title: Text("About"),
+              title: Text(txtAboutP, style: PrimaryFont.subTitleMedium(),),
             ),
           ],
         ),

@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
 import 'package:talkify_app/constants/color.dart';
+import 'package:talkify_app/constants/text.dart';
 import 'package:talkify_app/controllers/appwrite_controller.dart';
 import 'package:talkify_app/models/user_data_model.dart';
 import 'package:talkify_app/providers/user_data_provider.dart';
+import 'package:talkify_app/utils/theme_text.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({super.key});
@@ -42,9 +44,9 @@ class _SearchViewState extends State<SearchView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Search Users",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          txtTitleS,
+          style: PrimaryFont.titleBold(),
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(50),
@@ -62,8 +64,11 @@ class _SearchViewState extends State<SearchView> {
                   child: TextField(
                     controller: _searchController,
                     onSubmitted: (value) => _handleSearch,
-                    decoration: const InputDecoration(
-                        border: InputBorder.none, hintText: "Enter email"),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: txtHintTextFormS,
+                      hintStyle: PrimaryFont.subTitleMedium(),
+                    ),
                   ),
                 ),
                 IconButton(
@@ -82,12 +87,18 @@ class _SearchViewState extends State<SearchView> {
         ),
       ),
       body: searchedUsers.total == -1
-          ? const Center(
-              child: Text("Use the search box to search users."),
+          ? Center(
+              child: Text(
+                txtbodyText1S,
+                style: PrimaryFont.subTitleMedium(),
+              ),
             )
           : searchedUsers.total == 0
-              ? const Center(
-                  child: Text("No users found"),
+              ? Center(
+                  child: Text(
+                    txtbodyText2S,
+                    style: PrimaryFont.subTitleMedium(),
+                  ),
                 )
               : ListView.builder(
                   itemCount: searchedUsers.documents.length,

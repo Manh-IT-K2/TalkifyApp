@@ -29,3 +29,18 @@ const String txtFormC = "Type a message ...";
 
 // text feed screen
 const String txtTitleF = "Feed Explore";
+
+// text search screen
+const String txtTitleS = "Search Users";
+const String txtHintTextFormS = "Enter email";
+const String txtbodyText1S = "Use the search box to search users";
+const String txtbodyText2S = "No users found";
+
+// text profile screen
+const String txtTitleP = "Profile";
+const String txtLogoutP = "Logout";
+const String txtAboutP = "About";
+
+// text message screen
+const String txtTitleM = "Chatting room";
+const String txtBodyM = "No chats";

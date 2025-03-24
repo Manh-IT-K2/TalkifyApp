@@ -218,10 +218,7 @@ class _ChatViewState extends State<ChatView> {
                   children: [
                     Text(
                       receiver.name!,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: PrimaryFont.subTitleBold(),
                     ),
                     Text(otherUserOnline == true ? txtOnlineC : txtOfflineC,
                         style: PrimaryFont.subTitleMedium()

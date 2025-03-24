@@ -4,12 +4,14 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
 import 'package:talkify_app/constants/color.dart';
 import 'package:talkify_app/constants/fomate_date.dart';
+import 'package:talkify_app/constants/text.dart';
 import 'package:talkify_app/controllers/appwrite_controller.dart';
 import 'package:talkify_app/controllers/fcm_controller.dart';
 import 'package:talkify_app/models/chat_data_model.dart';
 import 'package:talkify_app/models/user_data_model.dart';
 import 'package:talkify_app/providers/chat_provider.dart';
 import 'package:talkify_app/providers/user_data_provider.dart';
+import 'package:talkify_app/utils/theme_text.dart';
 
 class MessageView extends StatefulWidget {
   const MessageView({super.key});
@@ -40,11 +42,9 @@ class _MessageViewState extends State<MessageView> {
         scrolledUnderElevation: 0,
         elevation: 0,
         backgroundColor: kBackgroundColor,
-        title: const Text(
-          "Chatting room",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+        title: Text(
+          txtTitleM,
+          style: PrimaryFont.titleBold(),
         ),
         actions: [
           // GestureDetector(
@@ -99,8 +99,8 @@ class _MessageViewState extends State<MessageView> {
       body: Consumer<ChatProvider>(
         builder: (context, value, child) {
           if (value.getAllChats.isEmpty) {
-            return const Center(
-              child: Text("No chats"),
+            return Center(
+              child: Text(txtBodyM, style: PrimaryFont.subTitleMedium(),),
             );
           } else {
             List otherUsers = value.getAllChats.keys.toList();
@@ -193,10 +193,11 @@ class _MessageViewState extends State<MessageView> {
                                 )
                               ],
                             ),
-                            title: Text(otherUser.name!),
+                            title: Text(otherUser.name!, style: PrimaryFont.subTitleMedium(),),
                             subtitle: Text(
                               "${chatData[totalChat - 1].message.sender == currentUserId ? "You: " : ""}${chatData[totalChat - 1].message.isImage == true ? "Sent an image" : chatData[totalChat - 1].message.message}",
                               overflow: TextOverflow.ellipsis,
+                              style: PrimaryFont.subTitleMedium(),
                             ),
                             trailing: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -220,7 +221,7 @@ class _MessageViewState extends State<MessageView> {
                                   height: 8,
                                 ),
                                 Text(fomateDate(
-                                    chatData[totalChat - 1].message.timestamp)),
+                                    chatData[totalChat - 1].message.timestamp),style: PrimaryFont.subTitleLight(),),
                               ],
                             ),
                           );
