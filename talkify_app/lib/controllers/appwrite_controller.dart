@@ -135,7 +135,9 @@ Future<String> createEmailSession({required String email}) async {
 
       // save the new user to user collection
       saveEmailToDB(email: email, userId: data.userId);
-      print("email: ${data.secret}");
+      if (kDebugMode) {
+        print("email: ${data.secret}");
+      }
       return data.userId;
     }
     // if user is an existing user
@@ -145,7 +147,9 @@ Future<String> createEmailSession({required String email}) async {
       final Token data =
           await account.createEmailToken(userId: userId, email: email);
 
-      print("email1: ${data.secret}");
+      if (kDebugMode) {
+        print("email1: ${data.secret}");
+      }
       return data.userId;
     }
   } catch (e) {

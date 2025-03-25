@@ -11,6 +11,7 @@ import 'package:talkify_app/constants/color.dart';
 import 'package:talkify_app/controllers/appwrite_controller.dart';
 import 'package:talkify_app/providers/user_data_provider.dart';
 import 'package:talkify_app/utils/theme_text.dart';
+import 'package:sizer/sizer.dart';
 
 class UpdateProfileView extends StatefulWidget {
   const UpdateProfileView({super.key});
@@ -20,8 +21,10 @@ class UpdateProfileView extends StatefulWidget {
 }
 
 class _UpdateProfileViewState extends State<UpdateProfileView> {
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
+
+  //
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   //
   FilePickerResult? _filePickerResult;
@@ -102,18 +105,20 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
         _emailController.text = value.getUserEmail;
         return Scaffold(
           appBar: AppBar(
-            title:
-                Text(datapassed["title"] == "edit" ? "Update" : "Add Details", style: PrimaryFont.titleBold(),),
+            title: Text(
+              datapassed["title"] == "edit" ? "Update" : "Add Details",
+              style: PrimaryFont.titleBold(),
+            ),
           ),
           body: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(
-                    height: 40,
+                  SizedBox(
+                    height: 5.h,
                   ),
                   GestureDetector(
                     onTap: () {
@@ -127,7 +132,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                             border: Border.all(color: Colors.black, width: 1),
                           ),
                           child: CircleAvatar(
-                            radius: 120,
+                            radius: 30.w,
                             backgroundColor: Colors.grey.shade200,
                             backgroundImage: _filePickerResult != null
                                 ? Image(
@@ -149,32 +154,31 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                           bottom: 0,
                           right: 0,
                           child: Container(
-                            padding: const EdgeInsets.all(20),
-                            decoration: BoxDecoration(
+                            padding: EdgeInsets.all(5.w),
+                            decoration: const BoxDecoration(
                               color: kPrimaryColor,
-                              borderRadius: BorderRadius.circular(30),
+                              shape: BoxShape.circle,
                             ),
-                            child: const HugeIcon(
+                            child: HugeIcon(
                               icon: HugeIcons.strokeRoundedEditUser02,
                               color: Colors.black,
-                              size: 24.0,
+                              size: 5.w,
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: 3.h,
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 1),
+                        border: Border.all(color: Colors.black, width: 0.5),
                         color: kSecondaryColor,
-                        borderRadius: BorderRadius.circular(12)),
-                    margin: const EdgeInsets.all(6),
+                        borderRadius: BorderRadius.circular(3.w)),
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.w),
                     child: Form(
                       key: _nameKey,
                       child: TextFormField(
@@ -183,7 +187,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                           return null;
                         },
                         controller: _nameController,
-                         style: PrimaryFont.subTitleMedium(),
+                        style: PrimaryFont.subTitleMedium(),
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "Enter you name",
@@ -191,32 +195,33 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: 3.h,
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 1),
-                        color: kSecondaryColor,
-                        borderRadius: BorderRadius.circular(12)),
-                    margin: const EdgeInsets.all(6),
+                      border: Border.all(color: Colors.black, width: 0.5),
+                      color: kSecondaryColor,
+                      borderRadius: BorderRadius.circular(3.w),
+                    ),
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.w),
                     child: TextFormField(
                       controller: _emailController,
                       style: PrimaryFont.subTitleMedium(),
                       enabled: false,
                       decoration: InputDecoration(
-                          border: InputBorder.none, 
-                          hintText: "email", 
-                          hintStyle: PrimaryFont.subTitleMedium(),),
+                        border: InputBorder.none,
+                        hintText: "email",
+                        hintStyle: PrimaryFont.subTitleMedium(),
+                      ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
+                  SizedBox(
+                    height: 3.h,
                   ),
                   SizedBox(
-                    height: 50,
+                    height: 7.h,
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () async {
@@ -225,22 +230,23 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                           if (_filePickerResult != null) {
                             await uploadProfileImage();
                           }
-                    
+
                           // save the data to database user colection
                           await updateUserDetail(imageId ?? "",
                               userId: userId!, name: _nameController.text);
-                    
+
                           // navigate the user to the home route
                           Navigator.pushNamedAndRemoveUntil(
                               context, "/home", (route) => false);
                         }
                       },
-                      child: Text(datapassed["title"] == "edit"
-                          ? "Update"
-                          : "Continue", style: PrimaryFont.subTitleMedium(),),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: kPrimaryColor,
                           foregroundColor: Colors.white),
+                      child: Text(
+                        datapassed["title"] == "edit" ? "Update" : "Continue",
+                        style: PrimaryFont.subTitleMedium(),
+                      ),
                     ),
                   ),
                 ],

@@ -1,6 +1,7 @@
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:sizer/sizer.dart';
 import 'package:talkify_app/constants/color.dart';
 import 'package:talkify_app/constants/text.dart';
 import 'package:talkify_app/views/feed_view.dart';
@@ -12,20 +13,27 @@ class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _HomeViewState createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> {
+
+  //
   int _currentIndex = 0;
 
-  // Danh sách các trang
-  final List<Widget> _pages = [
-    const MessageView(),
-    const FeedView(),
-    const SearchView(),
-    const ProfileView(),
+  // List page
+  final List<Widget> _pages = const [
+    MessageView(),
+    FeedView(),
+    SearchView(),
+    ProfileView(),
   ];
+
+  //
   late NotchBottomBarController _notchBottomBarController;
+
+  //
   @override
   void initState() {
     // Initialize the NotchBottomBarController
@@ -37,17 +45,17 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: AnimatedNotchBottomBar(
-        bottomBarItems: const [
+        bottomBarItems: [
           BottomBarItem(
             inActiveItem: HugeIcon(
               icon: HugeIcons.strokeRoundedMessenger,
               color: Colors.black,
-              size: 24.0,
+              size: 5.w,
             ),
             activeItem: HugeIcon(
               icon: HugeIcons.strokeRoundedMessenger,
               color: kPrimaryColor,
-              size: 24.0,
+              size: 5.w,
             ),
             itemLabel: txtMessageH,
           ),
@@ -55,12 +63,12 @@ class _HomeViewState extends State<HomeView> {
             inActiveItem: HugeIcon(
               icon: HugeIcons.strokeRoundedDashboardSquare03,
               color: Colors.black,
-              size: 24.0,
+              size: 5.w,
             ),
             activeItem: HugeIcon(
               icon: HugeIcons.strokeRoundedDashboardSquare03,
               color: kPrimaryColor,
-              size: 24.0,
+              size: 5.w,
             ),
             itemLabel: txtFeedH,
           ),
@@ -68,12 +76,12 @@ class _HomeViewState extends State<HomeView> {
             inActiveItem: HugeIcon(
               icon: HugeIcons.strokeRoundedAdd01,
               color: Colors.black,
-              size: 24.0,
+              size: 5.w,
             ),
             activeItem: HugeIcon(
               icon: HugeIcons.strokeRoundedAdd01,
               color: kPrimaryColor,
-              size: 24.0,
+              size: 5.w,
             ),
             itemLabel: txtAddH,
           ),
@@ -81,24 +89,25 @@ class _HomeViewState extends State<HomeView> {
             inActiveItem: HugeIcon(
               icon: HugeIcons.strokeRoundedUser,
               color: Colors.black,
-              size: 24.0,
+              size: 5.w,
             ),
             activeItem: HugeIcon(
               icon: HugeIcons.strokeRoundedUser,
               color: kPrimaryColor,
-              size: 24.0,
+              size: 5.w,
             ),
             itemLabel: txtAccountH,
           ),
         ],
         notchBottomBarController: _notchBottomBarController,
         onTap: (int value) {
+          // update current page
           setState(() {
-            _currentIndex = value; // Cập nhật trang hiện tại
+            _currentIndex = value;
           });
         },
-        kIconSize: 20.0,
-        kBottomRadius: 5.0,
+        kIconSize: 5.w,
+        kBottomRadius: 15.w,
       ),
       body: IndexedStack(
         index: _currentIndex,

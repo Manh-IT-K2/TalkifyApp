@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 import 'package:talkify_app/constants/color.dart';
 import 'package:talkify_app/constants/fomate_date.dart';
 import 'package:talkify_app/constants/text.dart';
@@ -21,6 +22,7 @@ class MessageView extends StatefulWidget {
 }
 
 class _MessageViewState extends State<MessageView> {
+  //
   late String currentUserId = "";
   @override
   void initState() {
@@ -34,7 +36,6 @@ class _MessageViewState extends State<MessageView> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     updateOnlineStatus(status: true, userId: currentUserId);
     return Scaffold(
       backgroundColor: kBackgroundColor,
@@ -47,60 +48,47 @@ class _MessageViewState extends State<MessageView> {
           style: PrimaryFont.titleBold(),
         ),
         actions: [
-          // GestureDetector(
-          //   onTap: () => Navigator.pushNamed(context, "/profile"),
-          //   child: Consumer<UserDataProvider>(
-          //     builder: (context, value, child) {
-          //       return CircleAvatar(
-          //         backgroundImage: value.getUserProfilePic == ""
-          //             ? const Image(
-          //                 image: AssetImage("assets/image/user.png"),
-          //               ).image
-          //             : CachedNetworkImageProvider(
-          //                 "https://cloud.appwrite.io/v1/storage/buckets/668d0d21002933fdfbd4/files/${value.getUserProfilePic}/view?project=6680f2b1003440efdcfe&mode=admin"),
-          //       );
-          //     },
-          //   ),
-          // ),
           Stack(
             children: [
-              const HugeIcon(
+              HugeIcon(
                 icon: HugeIcons.strokeRoundedNotification03,
-                color: Color.fromRGBO(0, 0, 0, 1),
-                size: 34.0,
+                color: const Color.fromRGBO(0, 0, 0, 1),
+                size: 8.w,
               ),
               Positioned(
                 top: 0,
                 right: 0,
                 child: Container(
                   decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.black, width: 1)),
-                  child: const CircleAvatar(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.black, width: 1),
+                  ),
+                  child: CircleAvatar(
                     backgroundColor: Colors.red,
                     radius: 8,
                     child: Text(
                       "5",
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.normal,
-                      ),
+                      style:
+                          PrimaryFont.medium(11).copyWith(color: Colors.white),
                     ),
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(
-            width: 20.0,
-          )
+          SizedBox(
+            width: 5.w,
+          ),
         ],
       ),
       body: Consumer<ChatProvider>(
         builder: (context, value, child) {
           if (value.getAllChats.isEmpty) {
             return Center(
-              child: Text(txtBodyM, style: PrimaryFont.subTitleMedium(),),
+              child: Text(
+                txtBodyM,
+                style: PrimaryFont.subTitleMedium(),
+              ),
             );
           } else {
             List otherUsers = value.getAllChats.keys.toList();
@@ -114,21 +102,21 @@ class _MessageViewState extends State<MessageView> {
                     left: -5,
                     right: -5,
                     child: Container(
-                      width: screenWidth + 10,
-                      height: 80,
+                      width: 100.w + 10,
+                      height: 20.w,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black),
                         color: kBoderChatColor,
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(3.w),
                       ),
                     ),
                   ),
                   Container(
-                    width: screenWidth,
-                    height: 80,
+                    width: 100.w,
+                    height: 20.w,
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(3.w),
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(
@@ -193,7 +181,10 @@ class _MessageViewState extends State<MessageView> {
                                 )
                               ],
                             ),
-                            title: Text(otherUser.name!, style: PrimaryFont.subTitleMedium(),),
+                            title: Text(
+                              otherUser.name!,
+                              style: PrimaryFont.subTitleMedium(),
+                            ),
                             subtitle: Text(
                               "${chatData[totalChat - 1].message.sender == currentUserId ? "You: " : ""}${chatData[totalChat - 1].message.isImage == true ? "Sent an image" : chatData[totalChat - 1].message.message}",
                               overflow: TextOverflow.ellipsis,
@@ -217,15 +208,20 @@ class _MessageViewState extends State<MessageView> {
                                             ))
                                         : const SizedBox()
                                     : const SizedBox(),
-                                const SizedBox(
-                                  height: 8,
+                                SizedBox(
+                                  height: 2.w,
                                 ),
-                                Text(fomateDate(
-                                    chatData[totalChat - 1].message.timestamp),style: PrimaryFont.subTitleLight(),),
+                                Text(
+                                  fomateDate(chatData[totalChat - 1]
+                                      .message
+                                      .timestamp),
+                                  style: PrimaryFont.subTitleLight(),
+                                ),
                               ],
                             ),
                           );
-                        }),
+                        },
+                        ),
                   ),
                 ],
               ),

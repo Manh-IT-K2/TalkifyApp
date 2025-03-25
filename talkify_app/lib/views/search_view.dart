@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 import 'package:talkify_app/constants/color.dart';
 import 'package:talkify_app/constants/text.dart';
 import 'package:talkify_app/controllers/appwrite_controller.dart';
@@ -18,7 +19,8 @@ class SearchView extends StatefulWidget {
 }
 
 class _SearchViewState extends State<SearchView> {
-  TextEditingController _searchController = TextEditingController();
+  //
+  final TextEditingController _searchController = TextEditingController();
   late DocumentList searchedUsers = DocumentList(total: -1, documents: []);
 
   // handle the search
@@ -49,15 +51,15 @@ class _SearchViewState extends State<SearchView> {
           style: PrimaryFont.titleBold(),
         ),
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(50),
+          preferredSize: Size.fromHeight(8.h),
           child: Container(
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.black, width: 1),
+              border: Border.all(color: Colors.black, width: 0.5),
               color: kSecondaryColor,
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(2.w),
             ),
-            margin: const EdgeInsets.all(8),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            margin: const EdgeInsets.all(12.0),
+            padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.w),
             child: Row(
               children: [
                 Expanded(
@@ -72,10 +74,10 @@ class _SearchViewState extends State<SearchView> {
                   ),
                 ),
                 IconButton(
-                  icon: const HugeIcon(
+                  icon: HugeIcon(
                     icon: HugeIcons.strokeRoundedMailSearch01,
                     color: Colors.black,
-                    size: 24.0,
+                    size: 6.w,
                   ),
                   onPressed: () {
                     _handleSearch();
@@ -105,9 +107,12 @@ class _SearchViewState extends State<SearchView> {
                   itemBuilder: (context, index) {
                     return ListTile(
                       onTap: () {
-                        Navigator.pushNamed(context, "/chat",
-                            arguments: UserDataModel.toMap(
-                                searchedUsers.documents[index].data));
+                        Navigator.pushNamed(
+                          context,
+                          "/chat",
+                          arguments: UserDataModel.toMap(
+                              searchedUsers.documents[index].data),
+                        );
                       },
                       leading: CircleAvatar(
                         backgroundImage: searchedUsers
@@ -122,9 +127,12 @@ class _SearchViewState extends State<SearchView> {
                                 image: AssetImage("assets/image/user.png"),
                               ).image,
                       ),
-                      title: Text(searchedUsers.documents[index].data["name"]),
-                      subtitle:
-                          Text(searchedUsers.documents[index].data["email"]),
+                      title: Text(
+                        searchedUsers.documents[index].data["name"],
+                      ),
+                      subtitle: Text(
+                        searchedUsers.documents[index].data["email"],
+                      ),
                     );
                   },
                 ),

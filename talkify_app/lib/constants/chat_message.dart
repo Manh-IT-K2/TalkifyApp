@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import 'package:talkify_app/constants/color.dart';
 import 'package:talkify_app/constants/fomate_date.dart';
 import 'package:talkify_app/models/message_model.dart';
@@ -25,63 +26,63 @@ class _ChatMessageState extends State<ChatMessage> {
   Widget build(BuildContext context) {
     return widget.isImage
         ? Row(
-          mainAxisAlignment: widget.msg.sender == widget.currentUser
-              ? MainAxisAlignment.end
-              : MainAxisAlignment.start,
-          children: [
-            Column(
-              crossAxisAlignment: widget.msg.sender == widget.currentUser
-                  ? CrossAxisAlignment.end
-                  : CrossAxisAlignment.start,
-              children: [
-                DottedBorder(
-                  dashPattern: const [4, 4],
-                  strokeWidth: 1,
-                  borderType: BorderType.RRect,
-                  radius: const Radius.circular(10),
-                  child: Container(
-                    margin: const EdgeInsets.all(4),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: CachedNetworkImage(
-                        imageUrl:
-                            "https://cloud.appwrite.io/v1/storage/buckets/668d0d21002933fdfbd4/files/${widget.msg.message}/view?project=6680f2b1003440efdcfe&mode=admin",
-                        height: 200,
-                        width: 200,
-                        fit: BoxFit.cover,
+            mainAxisAlignment: widget.msg.sender == widget.currentUser
+                ? MainAxisAlignment.end
+                : MainAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: widget.msg.sender == widget.currentUser
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.start,
+                children: [
+                  DottedBorder(
+                    dashPattern: const [4, 4],
+                    strokeWidth: 1,
+                    borderType: BorderType.RRect,
+                    radius: Radius.circular(3.w),
+                    child: Container(
+                      margin: const EdgeInsets.all(4),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(3.w),
+                        child: CachedNetworkImage(
+                          imageUrl:
+                              "https://cloud.appwrite.io/v1/storage/buckets/668d0d21002933fdfbd4/files/${widget.msg.message}/view?project=6680f2b1003440efdcfe&mode=admin",
+                          height: 50.w,
+                          width: 50.w,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 3),
-                      child: Text(
-                        fomateDate(widget.msg.timestamp),
-                        style: PrimaryFont.subTitleLight(),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 3),
+                        child: Text(
+                          fomateDate(widget.msg.timestamp),
+                          style: PrimaryFont.subTitleLight(),
+                        ),
                       ),
-                    ),
-                    widget.msg.sender == widget.currentUser
-                        ? widget.msg.isSeenByRecevier
-                            ? const Icon(
-                                Icons.check_circle_rounded,
-                                size: 16,
-                                color: kPrimaryColor,
-                              )
-                            : const Icon(
-                                Icons.check_circle_outline,
-                                size: 16,
-                                color: kPrimaryColor,
-                              )
-                        : const SizedBox(),
-                  ],
-                ),
-              ],
-            )
-          ],
-        )
+                      widget.msg.sender == widget.currentUser
+                          ? widget.msg.isSeenByRecevier
+                              ? Icon(
+                                  Icons.check_circle_rounded,
+                                  size: 5.w,
+                                  color: kPrimaryColor,
+                                )
+                              : Icon(
+                                  Icons.check_circle_outline,
+                                  size: 5.w,
+                                  color: kPrimaryColor,
+                                )
+                          : const SizedBox(),
+                    ],
+                  ),
+                ],
+              )
+            ],
+          )
         : Container(
             padding: const EdgeInsets.all(4),
             child: Row(
@@ -99,9 +100,7 @@ class _ChatMessageState extends State<ChatMessage> {
                         Container(
                           padding: const EdgeInsets.all(10),
                           margin: const EdgeInsets.symmetric(horizontal: 4),
-                          constraints: BoxConstraints(
-                              maxWidth:
-                                  MediaQuery.of(context).size.width * 0.75),
+                          constraints: BoxConstraints(maxWidth: 75.w),
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.black, width: 1),
                             color: widget.msg.sender == widget.currentUser
@@ -121,7 +120,8 @@ class _ChatMessageState extends State<ChatMessage> {
                           ),
                           child: Text(
                             widget.msg.message,
-                            style: PrimaryFont.subTitleMedium().copyWith(color: widget.msg.sender == widget.currentUser
+                            style: PrimaryFont.subTitleMedium().copyWith(
+                                color: widget.msg.sender == widget.currentUser
                                     ? Colors.white
                                     : Colors.black),
                           ),
@@ -139,14 +139,14 @@ class _ChatMessageState extends State<ChatMessage> {
                         ),
                         widget.msg.sender == widget.currentUser
                             ? widget.msg.isSeenByRecevier
-                                ? const Icon(
+                                ? Icon(
                                     Icons.check_circle_rounded,
-                                    size: 16,
+                                    size: 5.w,
                                     color: kPrimaryColor,
                                   )
-                                : const Icon(
+                                : Icon(
                                     Icons.check_circle_outline,
-                                    size: 16,
+                                    size: 5.w,
                                     color: kPrimaryColor,
                                   )
                             : const SizedBox(),

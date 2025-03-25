@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 import 'package:talkify_app/constants/color.dart';
 import 'package:talkify_app/constants/text.dart';
 import 'package:talkify_app/controllers/appwrite_controller.dart';
@@ -53,14 +54,15 @@ class _LoginViewState extends State<LoginView> {
     return Scaffold(
       body: SingleChildScrollView(
         child: SizedBox(
-          height: MediaQuery.of(context).size.height,
+          height: 100.h,
           width: double.infinity,
           child: Column(
             children: [
-              Expanded(
+              SizedBox(
+                height: 60.h,
                 child: Image.asset(
                   "assets/image/chat.png",
-                  fit: BoxFit.cover,
+                  fit: BoxFit.none,
                 ),
               ),
               Padding(
@@ -78,14 +80,15 @@ class _LoginViewState extends State<LoginView> {
                       style: PrimaryFont.subTitleMedium()
                           .copyWith(color: Colors.black),
                     ),
-                    const SizedBox(
-                      height: 20,
+                    SizedBox(
+                      height: 5.w,
                     ),
                     Form(
                       key: formKey,
                       child: TextFormField(
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
+                        style: PrimaryFont.subTitleMedium(),
                         decoration: InputDecoration(
                           labelText: txtFormLog,
                           labelStyle: PrimaryFont.subTitleMedium()
@@ -96,11 +99,11 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
+                    SizedBox(
+                      height: 5.w,
                     ),
                     SizedBox(
-                      height: 50,
+                      height: 12.w,
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
@@ -126,8 +129,8 @@ class _LoginViewState extends State<LoginView> {
                                           style: PrimaryFont.subTitleMedium()
                                               .copyWith(color: Colors.black),
                                         ),
-                                        const SizedBox(
-                                          height: 12,
+                                        SizedBox(
+                                          height: 5.w,
                                         ),
                                         Form(
                                           key: formKey1,
@@ -171,8 +174,11 @@ class _LoginViewState extends State<LoginView> {
                                 );
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Failed to send otp!"),
+                                  SnackBar(
+                                    content: Text(
+                                      "Failed to send otp!",
+                                      style: PrimaryFont.subTitleMedium(),
+                                    ),
                                   ),
                                 );
                               }

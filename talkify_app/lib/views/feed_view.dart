@@ -17,7 +17,7 @@ class FeedView extends StatelessWidget {
         ),
       ),
       body: Container(
-        margin: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+        margin: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
           children: [
             Expanded(
@@ -55,7 +55,7 @@ class _ItemFeed extends StatelessWidget {
           right: -5,
           child: Container(
             width: 100.w + 10,
-            height: 76.w,
+            height: 78.w,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black),
               color: kBoderChatColor,
@@ -68,7 +68,7 @@ class _ItemFeed extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(color: Colors.black),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(3.w),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.2),
@@ -83,14 +83,14 @@ class _ItemFeed extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const SizedBox(width: 12),
+                    SizedBox(width: 3.w),
                     CircleAvatar(
                       radius: 8.w,
                       backgroundImage: const NetworkImage(
                           'https://i.pinimg.com/736x/a8/e7/34/a8e7349443e12d34d2fc6b3a03e2967e.jpg'),
                       backgroundColor: Colors.grey[200],
                     ),
-                    const SizedBox(width: 5),
+                   SizedBox(width: 1.w),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -111,7 +111,7 @@ class _ItemFeed extends StatelessWidget {
                     ),
                   ],
                 ),
-                const Divider(thickness: 0.5, color: Colors.black, height: 5),
+                Divider(thickness: 0.5, color: Colors.black, height: 3.w),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
                   child: Text(
@@ -121,9 +121,9 @@ class _ItemFeed extends StatelessWidget {
                     overflow: TextOverflow.ellipsis, // ...
                   ),
                 ),
-                // Ẩn/Hiện ảnh linh hoạt
+                // hide/show image flexible
                 Visibility(
-                  visible: true, // Nếu không cần ảnh, đặt `false`
+                  visible: true,
                   child: Container(
                     margin: const EdgeInsets.fromLTRB(12, 8, 12, 0),
                     height: 30.w,
@@ -152,12 +152,12 @@ class _ItemFeed extends StatelessWidget {
                           color: Colors.red,
                         ),
                       ),
-                      const SizedBox(width: 6),
+                      SizedBox(width: 2.w),
                       Text(
                         "10",
                         style: PrimaryFont.subTitleLight(),
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: 2.w),
                       GestureDetector(
                         onTap: () {},
                         child: Icon(
@@ -166,7 +166,7 @@ class _ItemFeed extends StatelessWidget {
                           color: Colors.black,
                         ),
                       ),
-                      const SizedBox(width: 6),
+                      SizedBox(width: 2.w),
                       Text(
                         "10 Comment",
                         style: PrimaryFont.subTitleLight(),

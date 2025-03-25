@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 import 'package:talkify_app/constants/chat_message.dart';
 import 'package:talkify_app/constants/color.dart';
 import 'package:talkify_app/constants/text.dart';
@@ -25,39 +26,13 @@ class ChatView extends StatefulWidget {
 }
 
 class _ChatViewState extends State<ChatView> {
+  //
   TextEditingController messageController = TextEditingController();
   TextEditingController editMessageController = TextEditingController();
   late String currentUserId;
   late String currentUserName;
-
+  //
   FilePickerResult? _filePickerResult;
-  // List messages = [
-  //   MessageModel(
-  //       message: "Hello!",
-  //       sender: "101",
-  //       receiver: "202",
-  //       timestamp: DateTime(2024, 1, 1),
-  //       isSeenByRecevier: true),
-  //   MessageModel(
-  //       message: "Hi!",
-  //       sender: "202",
-  //       receiver: "101",
-  //       timestamp: DateTime(2024, 1, 1),
-  //       isSeenByRecevier: false),
-  //   MessageModel(
-  //       message: "How Are You?",
-  //       sender: "101",
-  //       receiver: "202",
-  //       timestamp: DateTime(2024, 1, 1),
-  //       isSeenByRecevier: false),
-  //   MessageModel(
-  //       message: "How Are You?",
-  //       sender: "101",
-  //       receiver: "202",
-  //       timestamp: DateTime(2024, 1, 1),
-  //       isSeenByRecevier: false,
-  //       isImage: true),
-  // ];
 
   @override
   void initState() {
@@ -83,46 +58,56 @@ class _ChatViewState extends State<ChatView> {
   // to upload files to our storage bucket and our database
   void uploadAllImage(UserDataModel receiver) async {
     if (_filePickerResult != null) {
-      _filePickerResult!.paths.forEach((path) {
-        if (path != null) {
-          var file = File(path);
-          final fileBytes = file.readAsBytesSync();
-          final inputFile = InputFile.fromBytes(
-              bytes: fileBytes, filename: file.path.split("/").last);
+      _filePickerResult!.paths.forEach(
+        (path) {
+          if (path != null) {
+            var file = File(path);
+            final fileBytes = file.readAsBytesSync();
+            final inputFile = InputFile.fromBytes(
+                bytes: fileBytes, filename: file.path.split("/").last);
 
-          // saving image to our storage bucket
-          saveImageToBucket(image: inputFile).then((imageId) {
-            if (imageId != null) {
-              createNewChat(
-                      message: imageId,
-                      senderId: currentUserId,
-                      receiverId: receiver.userId,
-                      isImage: true)
-                  .then((value) {
-                if (value) {
-                  Provider.of<ChatProvider>(context, listen: false).addMessage(
-                      MessageModel(
+            // saving image to our storage bucket
+            saveImageToBucket(image: inputFile).then(
+              (imageId) {
+                if (imageId != null) {
+                  createNewChat(
                           message: imageId,
-                          sender: currentUserId,
-                          receiver: receiver.userId,
-                          timestamp: DateTime.now(),
-                          isSeenByRecevier: false,
-                          isImage: true),
-                      currentUserId,
-                      [
-                        UserDataModel(email: "", userId: currentUserId),
-                        receiver
-                      ]);
-                  sendNotificationToOtherUser(
-                      notificationTitle: "$currentUserName sent you an image",
-                      notificationBody: "check it our.",
-                      deviceToken: receiver.deviceToken!);
+                          senderId: currentUserId,
+                          receiverId: receiver.userId,
+                          isImage: true)
+                      .then(
+                    (value) {
+                      if (value) {
+                        Provider.of<ChatProvider>(context, listen: false)
+                            .addMessage(
+                          MessageModel(
+                              message: imageId,
+                              sender: currentUserId,
+                              receiver: receiver.userId,
+                              timestamp: DateTime.now(),
+                              isSeenByRecevier: false,
+                              isImage: true),
+                          currentUserId,
+                          [
+                            UserDataModel(email: "", userId: currentUserId),
+                            receiver
+                          ],
+                        );
+                        sendNotificationToOtherUser(
+                          notificationTitle:
+                              "$currentUserName sent you an image",
+                          notificationBody: "check it our.",
+                          deviceToken: receiver.deviceToken!,
+                        );
+                      }
+                    },
+                  );
                 }
-              });
-            }
-          });
-        }
-      });
+              },
+            );
+          }
+        },
+      );
     } else {
       if (kDebugMode) {
         print("File piclk  cancelled by user");
@@ -163,8 +148,8 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) {
-    UserDataModel receiver =
-        ModalRoute.of(context)!.settings.arguments as UserDataModel;
+    //
+    UserDataModel receiver = ModalRoute.of(context)!.settings.arguments as UserDataModel;
     return Consumer<ChatProvider>(
       builder: (context, value, child) {
         //
@@ -210,8 +195,8 @@ class _ChatViewState extends State<ChatView> {
                             "https://cloud.appwrite.io/v1/storage/buckets/668d0d21002933fdfbd4/files/${receiver.profilePic}/view?project=6680f2b1003440efdcfe&mode=admin"),
                   ),
                 ),
-                const SizedBox(
-                  width: 10,
+                SizedBox(
+                  width: 5.w,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,7 +217,7 @@ class _ChatViewState extends State<ChatView> {
             children: [
               Expanded(
                 child: Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(12.0),
                   child: ListView.builder(
                       reverse: true,
                       itemCount: userAndOtherChats.length,
@@ -363,11 +348,12 @@ class _ChatViewState extends State<ChatView> {
                             currentUser: currentUserId,
                           ),
                         );
-                      }),
+                      },
+                      ),
                 ),
               ),
               Container(
-                margin: const EdgeInsets.fromLTRB(12, 6, 12, 22),
+                margin: const EdgeInsets.fromLTRB(12, 0, 12, 22),
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black, width: 1),
@@ -391,20 +377,20 @@ class _ChatViewState extends State<ChatView> {
                       onPressed: () {
                         _openFilePicker(receiver);
                       },
-                      icon: const HugeIcon(
+                      icon: HugeIcon(
                         icon: HugeIcons.strokeRoundedImage02,
                         color: Colors.purple,
-                        size: 24.0,
+                        size: 7.w,
                       ),
                     ),
                     IconButton(
                       onPressed: () {
                         _sendMessage(receiver: receiver);
                       },
-                      icon: const HugeIcon(
+                      icon: HugeIcon(
                         icon: HugeIcons.strokeRoundedSent,
                         color: Colors.blue,
-                        size: 24.0,
+                        size: 7.w,
                       ),
                     ),
                   ],
