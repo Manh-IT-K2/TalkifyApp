@@ -340,7 +340,9 @@ Future createNewChat(
           "users": [senderId, receiverId]
         });
     if (kDebugMode) {
-      print("Message send : $msg",);
+      print(
+        "Message send : $msg",
+      );
     }
     return true;
   } catch (e) {
@@ -514,4 +516,127 @@ Future sendNotificationToOtherUser({
       print("Notification cannot be sent");
     }
   }
+}
+
+/// Gửi Offer/Answer lên Appwrite và trả về documentId
+Future<String> sendSignalingData(
+    String callerId, String callReceiverId, String sdp, String type) async {
+  try {
+    final document = await databases.createDocument(
+      databaseId: 'webrtc',
+      collectionId: collectionId,
+      documentId: ID.unique(),
+      data: {
+        'callerId': callerId,
+        'callReceiverId': callReceiverId,
+        'sdp': sdp,
+        'type': type,
+      },
+    );
+    return document.$id;
+  } catch (e) {
+    if (kDebugMode) {
+      print("❌ Lỗi khi gửi signaling data: $e");
+    }
+    return Future.error(e);
+  }
+}
+
+const String collectionId = 'Signalings';
+
+/// Gửi ICE Candidate
+Future<void> sendIceCandidate(
+    String callerId, String callReceiverId, String candidate) async {
+  try {
+    await databases.createDocument(
+      databaseId: 'webrtc',
+      collectionId: collectionId,
+      documentId: ID.unique(),
+      data: {
+        'callerId': callerId,
+        'callReceiverId': callReceiverId,
+        'iceCandidate': candidate,
+        'type': 'candidate',
+      },
+    );
+  } catch (e) {
+    if (kDebugMode) {
+      print("❌ Lỗi khi gửi ICE Candidate: $e");
+    }
+    return Future.error(e);
+  }
+}
+
+/// Lắng nghe tín hiệu từ Appwrite
+void listenForSignaling(String userId, Function(Map<String, dynamic>) onData) {
+  final subscription = realtime
+      .subscribe(['databases.webrtc.collections.$collectionId.documents']);
+
+  subscription.stream.listen((RealtimeMessage event) {
+    if (event.payload == null || event.payload.isEmpty) {
+      if (kDebugMode) {
+        print("⚠️ Không có dữ liệu trạng thái cuộc gọi");
+      }
+      return;
+    }
+
+    try {
+      // event.payload đã là Map<String, dynamic> nên không cần jsonDecode
+      final Map<String, dynamic> data = event.payload;
+
+      if (data.containsKey('callReceiverId') &&
+          data['callReceiverId'] == userId) {
+        onData(data);
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("❌ Lỗi khi xử lý dữ liệu từ Realtime: $e");
+      }
+    }
+  });
+}
+
+//
+// Gửi trạng thái cuộc gọi
+Future<void> updateCallStatus(String callId, String status) async {
+  try {
+    await databases.updateDocument(
+      databaseId: 'webrtc',
+      collectionId: collectionId,
+      documentId: callId,
+      data: {'status': status},
+    );
+  } catch (e) {
+    if (kDebugMode) {
+      print("❌ Lỗi khi cập nhật trạng thái cuộc gọi: $e");
+    }
+    return Future.error(e);
+  }
+}
+
+// Lắng nghe trạng thái cuộc gọi
+void listenForCallStatus(String callId, Function(String) onStatusChange) {
+  final subscription = realtime.subscribe(
+      ['databases.webrtc.collections.$collectionId.documents.$callId']);
+
+  subscription.stream.listen((RealtimeMessage event) {
+    if (event.payload == null || event.payload.isEmpty) {
+      if (kDebugMode) {
+        print("⚠️ Không có dữ liệu trạng thái cuộc gọi");
+      }
+      return;
+    }
+
+    try {
+      final Map<String, dynamic> data = event.payload;
+
+      if (data.containsKey('status')) {
+        onStatusChange(data['status']);
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("❌ Lỗi khi xử lý dữ liệu từ Realtime: $e");
+      }
+    }
+  });
 }

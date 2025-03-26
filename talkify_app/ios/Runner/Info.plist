@@ -47,5 +47,13 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>MinimumOSVersion</key>
+	<string>13.0</string>
+	<key>NSCameraUsageDescription</key>
+	<string>The app needs access to the camera to make video calls.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>The app needs access to the microphone to make audio calls.</string>
+
+
 </dict>
 </plist>

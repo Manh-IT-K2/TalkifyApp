@@ -17,6 +17,7 @@ import 'package:talkify_app/models/user_data_model.dart';
 import 'package:talkify_app/providers/chat_provider.dart';
 import 'package:talkify_app/providers/user_data_provider.dart';
 import 'package:talkify_app/utils/theme_text.dart';
+import 'package:talkify_app/views/call_view.dart';
 
 class ChatView extends StatefulWidget {
   const ChatView({super.key});
@@ -149,7 +150,8 @@ class _ChatViewState extends State<ChatView> {
   @override
   Widget build(BuildContext context) {
     //
-    UserDataModel receiver = ModalRoute.of(context)!.settings.arguments as UserDataModel;
+    UserDataModel receiver =
+        ModalRoute.of(context)!.settings.arguments as UserDataModel;
     return Consumer<ChatProvider>(
       builder: (context, value, child) {
         //
@@ -210,6 +212,35 @@ class _ChatViewState extends State<ChatView> {
                             .copyWith(color: kPrimaryColor)),
                   ],
                 ),
+                const Spacer(),
+                GestureDetector(
+                  onTap: () {},
+                  child: Icon(
+                    HugeIcons.strokeRoundedCall02,
+                    size: 8.w,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(
+                  width: 5.w,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CallView(
+                            callerId: currentUserId,
+                            callReceiverId: receiver.userId),
+                      ),
+                    );
+                  },
+                  child: Icon(
+                    HugeIcons.strokeRoundedVideo02,
+                    size: 8.w,
+                    color: Colors.black,
+                  ),
+                ),
               ],
             ),
           ),
@@ -219,137 +250,136 @@ class _ChatViewState extends State<ChatView> {
                 child: Container(
                   padding: const EdgeInsets.all(12.0),
                   child: ListView.builder(
-                      reverse: true,
-                      itemCount: userAndOtherChats.length,
-                      itemBuilder: (context, index) {
-                        final msg = userAndOtherChats[
-                                userAndOtherChats.length - 1 - index]
-                            .message;
-                        return GestureDetector(
-                          onLongPress: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: msg.isImage == true
-                                    ? Text(msg.sender == currentUserId
-                                        ? "Chose what you want to do with this image."
-                                        : "This image cant be modified.")
-                                    : Text(
-                                        "${msg.message.length > 19 ? msg.message.substring(0, 19) + "..." : msg.message}"),
-                                content: msg.isImage == true
-                                    ? Text(msg.sender == currentUserId
-                                        ? "Delete this image."
-                                        : "This image cant be deleted.")
-                                    : Text(msg.sender == currentUserId
-                                        ? "Chose what you want to do with this message."
-                                        : "This message cant be modified."),
-                                actions: [
-                                  msg.sender == currentUserId
-                                      ? TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                            editMessageController.text =
-                                                msg.message;
-                                            showDialog(
-                                                context: context,
-                                                builder: (context) =>
-                                                    AlertDialog(
-                                                      title: Text(
-                                                        txtEditDialogC,
-                                                        style: PrimaryFont
-                                                                .subTitleMedium()
-                                                            .copyWith(
-                                                                color: Colors
-                                                                    .black),
-                                                      ),
-                                                      content: TextFormField(
-                                                        controller:
-                                                            editMessageController,
-                                                        maxLines: 10,
-                                                      ),
-                                                      actions: [
-                                                        TextButton(
-                                                          onPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: Text(
-                                                            txtCancelDialogC,
-                                                            style: PrimaryFont
-                                                                    .subTitleMedium()
-                                                                .copyWith(
-                                                                    color: Colors
-                                                                        .black),
-                                                          ),
+                    reverse: true,
+                    itemCount: userAndOtherChats.length,
+                    itemBuilder: (context, index) {
+                      final msg = userAndOtherChats[
+                              userAndOtherChats.length - 1 - index]
+                          .message;
+                      return GestureDetector(
+                        onLongPress: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: msg.isImage == true
+                                  ? Text(msg.sender == currentUserId
+                                      ? "Chose what you want to do with this image."
+                                      : "This image cant be modified.")
+                                  : Text(
+                                      "${msg.message.length > 19 ? msg.message.substring(0, 19) + "..." : msg.message}"),
+                              content: msg.isImage == true
+                                  ? Text(msg.sender == currentUserId
+                                      ? "Delete this image."
+                                      : "This image cant be deleted.")
+                                  : Text(msg.sender == currentUserId
+                                      ? "Chose what you want to do with this message."
+                                      : "This message cant be modified."),
+                              actions: [
+                                msg.sender == currentUserId
+                                    ? TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          editMessageController.text =
+                                              msg.message;
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                    title: Text(
+                                                      txtEditDialogC,
+                                                      style: PrimaryFont
+                                                              .subTitleMedium()
+                                                          .copyWith(
+                                                              color:
+                                                                  Colors.black),
+                                                    ),
+                                                    content: TextFormField(
+                                                      controller:
+                                                          editMessageController,
+                                                      maxLines: 10,
+                                                    ),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: Text(
+                                                          txtCancelDialogC,
+                                                          style: PrimaryFont
+                                                                  .subTitleMedium()
+                                                              .copyWith(
+                                                                  color: Colors
+                                                                      .black),
                                                         ),
-                                                        TextButton(
-                                                          onPressed: () {
-                                                            editChat(
-                                                                chatId: msg
-                                                                    .messageId!,
-                                                                message:
-                                                                    editMessageController
-                                                                        .text);
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: Text(
-                                                            txtOkC,
-                                                            style: PrimaryFont
-                                                                    .subTitleBold()
-                                                                .copyWith(
-                                                                    color: Colors
-                                                                        .black),
-                                                          ),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          editChat(
+                                                              chatId: msg
+                                                                  .messageId!,
+                                                              message:
+                                                                  editMessageController
+                                                                      .text);
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: Text(
+                                                          txtOkC,
+                                                          style: PrimaryFont
+                                                                  .subTitleBold()
+                                                              .copyWith(
+                                                                  color: Colors
+                                                                      .black),
                                                         ),
-                                                      ],
-                                                    ));
-                                          },
-                                          child: Text(
-                                            txtEditC,
-                                            style: PrimaryFont.subTitleBold()
-                                                .copyWith(color: Colors.black),
-                                          ),
-                                        )
-                                      : const SizedBox(),
-                                  msg.sender == currentUserId
-                                      ? TextButton(
-                                          onPressed: () {
-                                            Provider.of<ChatProvider>(context,
-                                                    listen: false)
-                                                .deleteMessage(
-                                                    msg, currentUserId);
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            txtDeleteC,
-                                            style: PrimaryFont.subTitleMedium()
-                                                .copyWith(color: Colors.black),
-                                          ),
-                                        )
-                                      : const SizedBox(),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text(
-                                      txtCancelC,
-                                      style: PrimaryFont.subTitleMedium()
-                                          .copyWith(color: Colors.black),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            );
-                          },
-                          child: ChatMessage(
-                            isImage: msg.isImage ?? false,
-                            msg: msg,
-                            currentUser: currentUserId,
-                          ),
-                        );
-                      },
-                      ),
+                                                      ),
+                                                    ],
+                                                  ));
+                                        },
+                                        child: Text(
+                                          txtEditC,
+                                          style: PrimaryFont.subTitleBold()
+                                              .copyWith(color: Colors.black),
+                                        ),
+                                      )
+                                    : const SizedBox(),
+                                msg.sender == currentUserId
+                                    ? TextButton(
+                                        onPressed: () {
+                                          Provider.of<ChatProvider>(context,
+                                                  listen: false)
+                                              .deleteMessage(
+                                                  msg, currentUserId);
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text(
+                                          txtDeleteC,
+                                          style: PrimaryFont.subTitleMedium()
+                                              .copyWith(color: Colors.black),
+                                        ),
+                                      )
+                                    : const SizedBox(),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    txtCancelC,
+                                    style: PrimaryFont.subTitleMedium()
+                                        .copyWith(color: Colors.black),
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                        child: ChatMessage(
+                          isImage: msg.isImage ?? false,
+                          msg: msg,
+                          currentUser: currentUserId,
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
               Container(

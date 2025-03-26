@@ -11,6 +11,7 @@ import 'package:talkify_app/controllers/local_saved_data.dart';
 import 'package:talkify_app/firebase_options.dart';
 import 'package:talkify_app/providers/chat_provider.dart';
 import 'package:talkify_app/providers/user_data_provider.dart';
+import 'package:talkify_app/views/call_view.dart';
 import 'package:talkify_app/views/chat_view.dart';
 import 'package:talkify_app/views/feed_view.dart';
 import 'package:talkify_app/views/home_view.dart';
@@ -19,7 +20,6 @@ import 'package:talkify_app/views/message_view.dart';
 import 'package:talkify_app/views/profile_view.dart';
 import 'package:talkify_app/views/search_view.dart';
 import 'package:talkify_app/views/update_profile_view.dart';
-import 'package:sizer/sizer.dart';
 import 'package:sizer/sizer.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -168,6 +168,7 @@ class MyApp extends StatelessWidget {
               "/search": (context) => const SearchView(),
               "/feed": (context) => const FeedView(),
               "/message_view": (context) => const MessageView(),
+              //"/call": (context) => const CallView(callerId: callerId, callReceiverId: callReceiverId)
             },
           ),
         );
