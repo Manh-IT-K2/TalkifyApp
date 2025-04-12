@@ -226,14 +226,14 @@ class _ChatViewState extends State<ChatView> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CallView(
-                            callerId: currentUserId,
-                            callReceiverId: receiver.userId),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => CallView(
+                    //         callerId: currentUserId,
+                    //         callReceiverId: receiver.userId),
+                    //   ),
+                    // );
                   },
                   child: Icon(
                     HugeIcons.strokeRoundedVideo02,

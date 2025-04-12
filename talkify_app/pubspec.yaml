@@ -67,7 +67,9 @@ dependencies:
   
   # responsive app
   sizer: ^3.0.4
-  flutter_webrtc: ^0.13.0
+  
+  # call audio video
+  flutter_webrtc: ^0.12.11
 
 dev_dependencies:
   flutter_test:
